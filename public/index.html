@@ -9,8 +9,12 @@
 <body>
     <h1> Placeholder </h1>
 </body>
-<script src="/socket.io/socket.io.js"></script>
+
+<script src="client/client.js"></script>
 <script>
-  var socket = io();
+  console.log(window.location.pathname);
+  let tcpSocket = new TCPSocket('127.0.0.1', '7070');
+  tcpSocket.send("whatsapp");
 </script>
+
 </html>
