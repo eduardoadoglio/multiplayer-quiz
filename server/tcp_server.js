@@ -10,23 +10,41 @@ server.listen(port, host, () => {
 
 let sockets = [];
 
+function getIndexOfSocketInList(socketList, socket) {
+  return sockets.findIndex(function(o) {
+    return o.remoteAddress === socket.remoteAddress && o.remotePort === socket.remotePort
+  });
+};
+
+function removeSocketFromList(socket) {
+  let index = getIndexOfSocketInList(sockets, socket);
+  if (index !== -1){
+    sockets.splice(index, 1);
+  }
+};
+
 server.on('connection', function(socket) {
   console.log(`-- Socket ${socket.remoteAddress}:${socket.remotePort} connected`);
   sockets.push(socket);
   socket.on('data', function(data){
     console.log(`-- Socket ${socket.remoteAddress}:${socket.remotePort} sent ${data}`);
     sockets.forEach(function(socket, index, array) {
-      socket.write(`-- Socket ${socket.remoteAddress}:${socket.remotePort} said ${data}\n`);
+      socket.write(`${data}`);
     });
   });
 
   socket.on('close', function(data) {
-    let index = sockets.findIndex(function(o) {
-      return o.remoteAddress === socket.remoteAddress && o.remotePort === socket.remotePort
-    });
-    if (index !== -1){
-      sockets.splice(index, 1);
-    }
+    removeSocketFromList(socket);
+    socket.destroy();
     console.log(`-- Socket ${socket.remoteAddress}:${socket.remotePort} closed connection`);
+  });
+
+  socket.on('error', function(error) {
+    removeSocketFromList(socket);
+    socket.destroy();
+  });
+
+  socket.on('/', function(){
+    console.log(`-------- Received / !!!`);
   });
 });

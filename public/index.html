@@ -7,14 +7,13 @@
     <title>Multiplayer Quiz</title>
 </head>
 <body>
-    <h1> Placeholder </h1>
+    <h1> Kahootzada BRABA </h1>
+    <form action="/player/">
+      Nomezada
+      <input type="text" name="name" id="name" autofocus>
+      Game pin
+      <input type="text" name="gamePin" id="gamePin">
+      <button type="submit">Entrar</button>
+    </form>
 </body>
-
-<script src="client/client.js"></script>
-<script>
-  console.log(window.location.pathname);
-  let tcpSocket = new TCPSocket('127.0.0.1', '7070');
-  tcpSocket.send("whatsapp");
-</script>
-
 </html>
