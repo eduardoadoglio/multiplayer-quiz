@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>New game</title>
+  </head>
+  <body>
+    <a href="../">Voltar</a>
+    <h1>Criação de um jogo</h1>
+    Adicione uma questão
+    <div class="question">
+      <div class="question-info">
+        <span>Questão 1</span>
+        <input type="text" id="question" />
+      </div>
+      <div class="question-info">
+        <span>Alternativa 1</span>
+        <input type="text" class="alternative" />
+      </div>
+      <div class="question-info">
+        <span>Alternativa 2</span>
+        <input type="text" class="alternative" />
+      </div>
+      <div class="question-info">
+        <span>Alternativa 3</span>
+        <input type="text" class="alternative" />
+      </div>
+      <div class="question-info">
+        <span>Alternativa 4</span>
+        <input type="text" class="alternative" />
+      </div>
+    </div>
+    <div class="question-info">
+      Alternativa correta:
+      <input type="text" id="correctAlt" />
+    </div>
+    <div class="new-question">
+      <button onclick="newQuestion()">Adicionar outra pergunta</button>
+    </div>
+    <div class="create-game">
+      <button onclick="createGame()">Finalizar criação do jogo</button>
+    </div>
+  </body>
+  <script src="../../socket.io/socket.io.js"></script>
+  <script src="../../js/newGame.js"></script>
+</html>
