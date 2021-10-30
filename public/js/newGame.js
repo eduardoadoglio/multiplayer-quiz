@@ -1,5 +1,11 @@
 let socket = io();
 
+let emptyQuestion = $(".questions").html();
+
+function newQuestion() {
+  $(".questions").append(emptyQuestion);
+}
+
 function createGame() {
   gameData = getGameDataFromDOM();
   socket.emit("newGame", gameData);
@@ -15,9 +21,8 @@ function getGameDataFromDOM() {
 
 function getQuestionsFromDOM() {
   let questions = [];
-  $(".question").each(function (_, question) {
+  $(".questions .question").each(function (_, question) {
     let questionTitle = $(this).find(".question-title #question").val();
-    console.log(`-- questionTitle = ${questionTitle}`);
     let answers = getAnswersFromQuestion(question);
     questions.push({
       title: questionTitle,
