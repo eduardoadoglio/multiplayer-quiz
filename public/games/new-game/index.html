@@ -6,35 +6,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>New game</title>
   </head>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <body>
     <a href="../">Voltar</a>
     <h1>Criação de um jogo</h1>
     Adicione uma questão
     <div class="question">
-      <div class="question-info">
+      <div class="question-field question-title">
         <span>Questão 1</span>
         <input type="text" id="question" />
       </div>
-      <div class="question-info">
+      <div class="question-field question-answer">
         <span>Alternativa 1</span>
-        <input type="text" class="alternative" />
+        <input type="text" id="alternative" />
+        <input type="checkbox" name="right-answer" id="right-answer" />
       </div>
-      <div class="question-info">
+      <div class="question-field question-answer">
         <span>Alternativa 2</span>
-        <input type="text" class="alternative" />
+        <input type="text" id="alternative" />
+        <input type="checkbox" name="right-answer" id="right-answer" />
       </div>
-      <div class="question-info">
+      <div class="question-field question-answer">
         <span>Alternativa 3</span>
-        <input type="text" class="alternative" />
+        <input type="text" id="alternative" />
+        <input type="checkbox" name="right-answer" id="right-answer" />
       </div>
-      <div class="question-info">
+      <div class="question-field question-answer">
         <span>Alternativa 4</span>
-        <input type="text" class="alternative" />
+        <input type="text" id="alternative" />
+        <input type="checkbox" name="right-answer" id="right-answer" />
       </div>
-    </div>
-    <div class="question-info">
-      Alternativa correta:
-      <input type="text" id="correctAlt" />
     </div>
     <div class="new-question">
       <button onclick="newQuestion()">Adicionar outra pergunta</button>
