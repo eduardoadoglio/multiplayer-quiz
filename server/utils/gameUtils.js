@@ -25,27 +25,27 @@ class GameUtils {
 
   static _getQuestionsFromGameData(gameData) {
     let questions = [];
-    for (let question in gameData["questions"]) {
+    gameData.questions.forEach(function (question) {
       questions.push(
         new questionModel({
-          title: question["title"],
-          answers: this._getAnswersFromQuestion(question),
+          title: question.title,
+          answers: GameUtils._getAnswersFromQuestion(question),
         })
       );
-    }
+    });
     return questions;
   }
 
   static _getAnswersFromQuestion(question) {
     let answers = [];
-    for (let answer in question["answers"]) {
+    question.answers.forEach(function (answer) {
       answers.push(
         new answerModel({
-          title: answer["title"],
-          correct: answer["correct"],
+          title: answer.title,
+          correct: answer.correct,
         })
       );
-    }
+    });
     return answers;
   }
 }

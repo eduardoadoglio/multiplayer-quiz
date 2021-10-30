@@ -50,7 +50,7 @@ io.on("connection", (socket) => {
   socket.on("newGame", (gameData) => {
     console.log("-- New game was created");
     console.log(`---- gameData: ${JSON.stringify(gameData)}`);
-    gameData["hostId"] = socket.id;
+    gameData.hostId = socket.id;
     let newGame = GameUtils.getGameModelFromMap(gameData);
     newGame.save();
     console.log(`-- Saved to database`);
