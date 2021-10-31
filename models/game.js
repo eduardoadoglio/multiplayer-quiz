@@ -12,6 +12,10 @@ let gameSchema = Schema({
   questions: { type: [QuestionSchema] },
 });
 
+gameSchema.query.byHostId = function (hostId) {
+  return this.where({ hostId: hostId });
+};
+
 game = mongoose.model("Game", gameSchema);
 
 exports.gameModel = game;

@@ -19,7 +19,8 @@ let io = socketIO(server);
 // DB configuration
 let MongoClient = require("mongodb").MongoClient;
 let mongoose = require("mongoose");
-const mongoUrl = "mongodb://127.0.0.1:27017/";
+const PlayerUtils = require("./utils/playerUtils");
+const mongoUrl = "mongodb://127.0.0.1:27017/quiz";
 
 mongoose.connect(mongoUrl, { useNewUrlParser: true });
 
@@ -50,10 +51,38 @@ io.on("connection", (socket) => {
   socket.on("newGame", (gameData) => {
     console.log("-- New game was created");
     console.log(`---- gameData: ${JSON.stringify(gameData)}`);
-    gameData.hostId = socket.id;
     let newGame = GameUtils.getGameModelFromMap(gameData);
     newGame.save();
     console.log(`-- Saved to database`);
     console.log(`---- ${newGame}`);
+  });
+
+  socket.on("newPlayer", (playerData) => {
+    let newPlayer = PlayerUtils.getPlayerModelFromMap(playerData);
+    newPlayer.save();
+    io.to(playerData.gamePin).emit("newPlayer", playerData);
+    socket.join(playerData.gamePin);
+  });
+
+  // socket.on("playerLeaving", (playerData) => {
+  //   console.log("-------- PLAYER LEAVING");
+  //   io.to(playerData.gamePin).emit("playerLeaving", playerData);
+  //   socket.leave(playerData.gamePin);
+  // });
+
+  socket.on("disconnect", async function () {
+    player = await PlayerUtils.getPlayerBySocketId(socket.id);
+    console.log(JSON.stringify(player));
+    if (player) {
+      await PlayerUtils.removePlayerFromGames(socket.id);
+      console.log(`-- Sending playerLeaving to game ${player.gamePin}`);
+      io.to(player.gamePin).emit("playerLeaving", player);
+    }
+  });
+
+  socket.on("listGames", async function (hostData) {
+    let hostId = hostData.hostId;
+    let games = await GameUtils.getAllGamesFromHost(hostId);
+    io.to(hostData.socketId).emit("listGames", games);
   });
 });

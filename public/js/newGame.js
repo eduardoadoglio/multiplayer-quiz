@@ -1,22 +1,34 @@
+import CookieUtils from "../utils/CookieUtils.js";
+import UuidUtils from "../utils/UuidUtils.js";
 let socket = io();
-
 let emptyQuestion = $(".questions").html();
 
-function newQuestion() {
+$("#new-question-btn").click(function () {
   $(".questions").append(emptyQuestion);
-}
+});
 
-function createGame() {
-  gameData = getGameDataFromDOM();
+$("#create-game-btn").click(function () {
+  let gameData = getGameData();
   socket.emit("newGame", gameData);
   window.location.href = "../";
-}
+});
 
-function getGameDataFromDOM() {
+function getGameData() {
+  let hostId = getHostId();
   let questions = getQuestionsFromDOM();
   return {
+    hostId: hostId,
     questions: questions,
   };
+}
+
+function getHostId() {
+  let hostId = CookieUtils.getCookie("userId");
+  if (hostId == undefined) {
+    hostId = UuidUtils.getUuid4();
+    CookieUtils.setCookie("userId", hostId);
+  }
+  return hostId;
 }
 
 function getQuestionsFromDOM() {
@@ -36,7 +48,7 @@ function getAnswersFromQuestion(question) {
   let answers = [];
   $(question)
     .find(".question-answer")
-    .each(function (_, _) {
+    .each(function (_, obj) {
       let answerTitle = $(this).find("#alternative").val();
       let correctAnswer = $(this).find("#right-answer").prop("checked");
       answers.push({
