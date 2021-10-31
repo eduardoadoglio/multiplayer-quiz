@@ -7,7 +7,7 @@ class GameUtils {
   static getGameModelFromMap(gameData) {
     return new gameModel({
       gamePin: this.generateGamePin(),
-      hostId: gameData["hostId"],
+      hostId: gameData.hostId,
       isLive: false,
       questions: this._getQuestionsFromGameData(gameData),
       currentQuestion: this._getCurrentQuestionFromGameData(gameData),
@@ -47,6 +47,11 @@ class GameUtils {
       );
     });
     return answers;
+  }
+
+  static async getAllGamesFromHost(hostId) {
+    let games = await gameModel.find({ hostId: hostId }).exec();
+    return games;
   }
 }
 

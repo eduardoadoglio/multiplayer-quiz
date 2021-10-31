@@ -6,11 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Games</title>
   </head>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <body>
     <a href="../">Voltar</a>
     <h1>Escolha um desses jogos ou crie um novo:</h1>
     <div id="current-games"></div>
-    <button onclick="newQuiz()">Criar um jogo novo</button>
+    <a href="../games/new-game/index.html"
+      ><button>Criar um jogo novo</button></a
+    >
+    <div class="games"><p>Ainda não há nenhum jogo criado.</p></div>
   </body>
-  <script src="../js/games.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script type="module" src="../js/games.js"></script>
 </html>
