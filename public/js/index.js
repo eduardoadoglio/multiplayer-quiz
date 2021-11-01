@@ -1,6 +1,5 @@
 $(document).ready(function () {
   let modalId = localStorage.getItem("openModal");
-  modalId = "#no-games-found";
   if (modalId) {
     $(modalId).css("display", "flex");
     $(modalId).animate(
