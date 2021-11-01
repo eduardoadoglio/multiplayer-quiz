@@ -5,7 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Multiplayer Quiz</title>
+    <link rel="stylesheet" href="css/index.css" />
   </head>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <body>
     <h1>Kahootzada BRABA</h1>
     <form action="/lobby/">
@@ -15,10 +17,15 @@
       <input type="text" name="gamePin" id="gamePin" />
       <button type="submit">Entrar</button>
     </form>
+    <div id="no-games-found">
+      <div class="no-games-content">Nenhum jogo encontrado :(</div>
+      <div id="close-modal">&times;</div>
+    </div>
     <a href="/games/">Ser o anfitrião de um jogo</a>
   </body>
   <script src="/socket.io/socket.io.js"></script>
   <script>
     var socket = io();
   </script>
+  <script src="js/index.js"></script>
 </html>
