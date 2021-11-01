@@ -1,0 +1,32 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap");
+
+* {
+  font-family: "Roboto", sans-serif;
+}
+
+#no-games-found {
+  position: fixed;
+  top: -10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: auto;
+  display: none;
+  border-radius: 13px;
+  align-items: center;
+  justify-self: center;
+  background-color: #dc3545;
+  color: white;
+  justify-content: flex-end;
+  padding: 18px 10px;
+}
+
+.no-games-content {
+  width: 300px;
+  margin-right: auto;
+}
+
+#close-modal {
+  font-size: 25px;
+  cursor: pointer;
+  align-self: flex-end;
+}

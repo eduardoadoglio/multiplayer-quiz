@@ -44,9 +44,6 @@ io.on("connection", (socket) => {
   let socketId = socket.id;
   console.log("-- User connected");
   console.log(`---- Socket ID is ${socketId}`);
-  socket.on("disconnect", () => {
-    console.log("-- User disconnected");
-  });
 
   socket.on("newGame", (gameData) => {
     console.log("-- New game was created");
@@ -57,22 +54,22 @@ io.on("connection", (socket) => {
     console.log(`---- ${newGame}`);
   });
 
-  socket.on("newPlayer", (playerData) => {
+  socket.on("newPlayer", async (playerData) => {
     let newPlayer = PlayerUtils.getPlayerModelFromMap(playerData);
-    newPlayer.save();
-    io.to(playerData.gamePin).emit("newPlayer", playerData);
-    socket.join(playerData.gamePin);
+    GameUtils.gameExists(newPlayer.gamePin).then((gameExists) => {
+      if (gameExists) {
+        newPlayer.save();
+        io.to(playerData.gamePin).emit("newPlayer", playerData);
+        socket.join(playerData.gamePin);
+      } else {
+        console.log(`Game ${newPlayer.gamePin} doesn't exist!`);
+        socket.emit("noGameFound");
+      }
+    });
   });
-
-  // socket.on("playerLeaving", (playerData) => {
-  //   console.log("-------- PLAYER LEAVING");
-  //   io.to(playerData.gamePin).emit("playerLeaving", playerData);
-  //   socket.leave(playerData.gamePin);
-  // });
 
   socket.on("disconnect", async function () {
     player = await PlayerUtils.getPlayerBySocketId(socket.id);
-    console.log(JSON.stringify(player));
     if (player) {
       await PlayerUtils.removePlayerFromGames(socket.id);
       console.log(`-- Sending playerLeaving to game ${player.gamePin}`);

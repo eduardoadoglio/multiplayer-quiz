@@ -14,7 +14,10 @@ class GameUtils {
     });
   }
   static generateGamePin() {
-    return parseInt(Math.random() * (9999 - 1000) + 1000);
+    // Pin generation function where we create a random number between 0 and 1 and cast it into
+    // a base36 string, which only contains a-z 0-9 characters. Then we remove some characters to
+    // reduce it to 5 characters.
+    return Math.random().toString(36).substring(2, 7);
   }
 
   static _getCurrentQuestionFromGameData(gameData) {
@@ -52,6 +55,12 @@ class GameUtils {
   static async getAllGamesFromHost(hostId) {
     let games = await gameModel.find({ hostId: hostId }).exec();
     return games;
+  }
+
+  static async gameExists(gamePin) {
+    gamePin = gamePin.toLowerCase();
+    let game = await gameModel.findOne({ gamePin: gamePin }).exec();
+    return game != null;
   }
 }
 
