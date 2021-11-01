@@ -16,4 +16,5 @@ $(document).ready(function () {
 
 $("#close-modal").click(function () {
   $(this).parent().css("display", "none");
+  $(this).parent().css("top", "-10%");
 });
