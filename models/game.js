@@ -5,7 +5,7 @@ ObjectId = Schema.ObjectId;
 let QuestionSchema = require("./question").questionModel.schema;
 
 let gameSchema = Schema({
-  gamePin: { type: Number },
+  gamePin: { type: String },
   hostId: { type: String },
   isLive: { type: Boolean, default: false },
   currentQuestion: { type: QuestionSchema },
