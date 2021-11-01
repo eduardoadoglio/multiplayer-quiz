@@ -29,7 +29,7 @@ socket.on("listGames", (games) => {
   games.forEach(function (game, i) {
     console.log(`---- GAME ${i}: ${game}`);
     $(".games").append(
-      `<p> Jogo ${i} <br> ${game.questions[0].title} <br> PIN: ${game.gamePin} </p>`
+      `<p> Jogo ${i} <br> ${game.questions[0].title} <br> PIN: ${game.gamePin.toUpperCase()} </p>`
     );
   });
 });
