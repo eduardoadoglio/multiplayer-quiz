@@ -34,6 +34,10 @@ socket.on("newPlayer", (playerData) => {
 });
 
 socket.on("playerLeaving", (playerData) => {
-  console.log(`-- Player ID is ${playerData.playerId}`);
   $(`p.${playerData.playerId}`).remove();
+});
+
+socket.on("noGameFound", function () {
+  localStorage.setItem("openModal", "#no-games-found");
+  window.location.href = "../index.html";
 });
