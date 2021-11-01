@@ -56,15 +56,16 @@ io.on("connection", (socket) => {
 
   socket.on("newPlayer", async (playerData) => {
     let newPlayer = PlayerUtils.getPlayerModelFromMap(playerData);
-    let gameExists = await !GameUtils.gameExists(newPlayer.gamePin);
-    if (!gameExists) {
-      console.log(`Game ${newPlayer.gamePin} doesn't exist!`);
-      socket.emit("noGameFound");
-      return;
-    }
-    newPlayer.save();
-    io.to(playerData.gamePin).emit("newPlayer", playerData);
-    socket.join(playerData.gamePin);
+    GameUtils.gameExists(newPlayer.gamePin).then((gameExists) => {
+      if (gameExists) {
+        newPlayer.save();
+        io.to(playerData.gamePin).emit("newPlayer", playerData);
+        socket.join(playerData.gamePin);
+      } else {
+        console.log(`Game ${newPlayer.gamePin} doesn't exist!`);
+        socket.emit("noGameFound");
+      }
+    });
   });
 
   socket.on("disconnect", async function () {
