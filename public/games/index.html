@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Games</title>
+    <link rel="stylesheet" href="../css/games.css" />
   </head>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <body>
@@ -14,7 +15,9 @@
     <a href="../games/new-game/index.html"
       ><button>Criar um jogo novo</button></a
     >
-    <div class="games"><p>Ainda não há nenhum jogo criado.</p></div>
+    <div class="games">
+      <div class="no-games"><p>Ainda não há nenhum jogo criado.</p></div>
+    </div>
   </body>
   <script src="/socket.io/socket.io.js"></script>
   <script type="module" src="../js/games.js"></script>

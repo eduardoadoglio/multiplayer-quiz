@@ -5,8 +5,22 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Host</title>
+    <link rel="stylesheet" href="../css/host.css" />
   </head>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <body>
-    <h1></h1>
+    <div class="game-info">
+      <div class="game-title"></div>
+      <div class="game-pin"></div>
+      <div class="go-live">
+        <button id="go-live-btn">Começar o quiz</button>
+      </div>
+    </div>
+    <div class="players-info">
+      <h1>Jogadores</h1>
+      <div class="players"></div>
+    </div>
   </body>
+  <script src="/socket.io/socket.io.js"></script>
+  <script type="module" src="../js/hostGame.js"></script>
 </html>

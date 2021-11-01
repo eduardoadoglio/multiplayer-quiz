@@ -1,0 +1,42 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap");
+
+* {
+  font-family: "Roboto", sans-serif;
+}
+
+.game-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.game-info #go-live-btn {
+  background-color: #457ab2;
+  border: none;
+  padding: 10px 18px;
+  color: white;
+  border-radius: 100px;
+  cursor: pointer;
+}
+
+.players-info .players {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: center;
+  padding: 5px;
+}
+
+.players .player-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #457ab2;
+  color: white;
+  width: auto;
+  padding: 18px 10px;
+  border-radius: 13px;
+  margin: 5px;
+  min-width: 200px;
+}
