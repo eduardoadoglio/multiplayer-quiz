@@ -23,6 +23,11 @@ class PlayerUtils {
     );
     await playerModel.deleteMany({ socketId: socketId });
   }
+
+  static async getAllPlayersFromGame(gamePin) {
+    let players = await playerModel.find({ gamePin: gamePin }).exec();
+    return players;
+  }
 }
 
 module.exports = PlayerUtils;

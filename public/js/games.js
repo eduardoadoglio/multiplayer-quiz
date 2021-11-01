@@ -23,13 +23,23 @@ function getHostId() {
 socket.on("listGames", (games) => {
   console.log(`-- GAMES: ${JSON.stringify(games)}`);
   if (games == undefined || games.length <= 0) {
+    $(".no-games").css("display", "flex");
     return;
   }
   $(".games").empty();
   games.forEach(function (game, i) {
-    console.log(`---- GAME ${i}: ${game}`);
+    let gamePin = game.gamePin.toUpperCase();
+    let gameTitle = game.title;
     $(".games").append(
-      `<p> Jogo ${i} <br> ${game.questions[0].title} <br> PIN: ${game.gamePin.toUpperCase()} </p>`
+      `<div class="game-card" data-pin="${gamePin}">
+        <div class="game-title">Titulo: ${gameTitle}</div>
+        <div class="game-pin">PIN: ${gamePin}</div>
+      </div>`
     );
   });
+});
+
+$(".games").on("click", ".game-card", function () {
+  let gamePin = $(this).data("pin");
+  window.location.href = `../host/index.html?gamePin=${gamePin}`;
 });

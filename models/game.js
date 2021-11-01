@@ -6,6 +6,7 @@ let QuestionSchema = require("./question").questionModel.schema;
 
 let gameSchema = Schema({
   gamePin: { type: String },
+  title: { type: String },
   hostId: { type: String },
   isLive: { type: Boolean, default: false },
   currentQuestion: { type: QuestionSchema },

@@ -8,6 +8,7 @@ class GameUtils {
     return new gameModel({
       gamePin: this.generateGamePin(),
       hostId: gameData.hostId,
+      title: gameData.title,
       isLive: false,
       questions: this._getQuestionsFromGameData(gameData),
       currentQuestion: this._getCurrentQuestionFromGameData(gameData),
@@ -16,8 +17,8 @@ class GameUtils {
   static generateGamePin() {
     // Pin generation function where we create a random number between 0 and 1 and cast it into
     // a base36 string, which only contains a-z 0-9 characters. Then we remove some characters to
-    // reduce it to 5 characters.
-    return Math.random().toString(36).substring(2, 7);
+    // reduce it to 5 characters and making it upperCase.
+    return Math.random().toString(36).substring(2, 7).toUpperCase();
   }
 
   static _getCurrentQuestionFromGameData(gameData) {
@@ -58,9 +59,23 @@ class GameUtils {
   }
 
   static async gameExists(gamePin) {
-    gamePin = gamePin.toLowerCase();
+    gamePin = gamePin.toUpperCase();
     let game = await gameModel.findOne({ gamePin: gamePin }).exec();
     return game != null;
+  }
+
+  static async getGameFromPin(gamePin) {
+    gamePin = gamePin.toUpperCase();
+    let game = await gameModel.findOne({ gamePin: gamePin }).exec();
+    return game;
+  }
+
+  static async startGame(gamePin) {
+    return await gameModel.findOneAndUpdate(
+      { gamePin: gamePin },
+      { isLive: true },
+      { new: true }
+    );
   }
 }
 

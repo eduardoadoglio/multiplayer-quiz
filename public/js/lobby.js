@@ -27,9 +27,9 @@ function getPlayerId() {
   return playerId;
 }
 
-socket.on("newPlayer", (playerData) => {
-  $("body").append(
-    `<p class="${playerData.playerId}">New player joined: ${playerData.name}</p>`
+socket.on("newPlayer", (player) => {
+  $(".players").append(
+    `<div class="player-card" id="${player.socketId}">${player.name}</div>`
   );
 });
 
@@ -40,4 +40,19 @@ socket.on("playerLeaving", (playerData) => {
 socket.on("noGameFound", function () {
   localStorage.setItem("openModal", "#no-games-found");
   window.location.href = "../index.html";
+});
+
+socket.on("startGame", (game) => {
+  localStorage.setItem("currentGame", JSON.stringify(game));
+  window.location.href = "../game/";
+});
+
+socket.on("listPlayers", (players) => {
+  console.log("-- Received listPlayers on lobby");
+  $(".players").empty();
+  players.forEach(function (player, _) {
+    $(".players").append(
+      `<div class="player-card" id="${player.socketId}">${player.name}</div>`
+    );
+  });
 });

@@ -15,9 +15,11 @@ $("#create-game-btn").click(function () {
 
 function getGameData() {
   let hostId = getHostId();
+  let title = getTitleFromDOM();
   let questions = getQuestionsFromDOM();
   return {
     hostId: hostId,
+    title: title,
     questions: questions,
   };
 }
@@ -29,6 +31,10 @@ function getHostId() {
     CookieUtils.setCookie("userId", hostId);
   }
   return hostId;
+}
+
+function getTitleFromDOM() {
+  return $("#title").val();
 }
 
 function getQuestionsFromDOM() {

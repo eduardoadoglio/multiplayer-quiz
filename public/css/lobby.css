@@ -1,0 +1,21 @@
+.players {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: center;
+  padding: 5px;
+}
+
+.players .player-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #457ab2;
+  color: white;
+  width: auto;
+  padding: 18px 10px;
+  border-radius: 13px;
+  margin: 5px;
+  min-width: 200px;
+}

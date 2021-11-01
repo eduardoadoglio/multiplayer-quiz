@@ -46,26 +46,24 @@ io.on("connection", (socket) => {
   console.log(`---- Socket ID is ${socketId}`);
 
   socket.on("newGame", (gameData) => {
-    console.log("-- New game was created");
-    console.log(`---- gameData: ${JSON.stringify(gameData)}`);
     let newGame = GameUtils.getGameModelFromMap(gameData);
     newGame.save();
-    console.log(`-- Saved to database`);
-    console.log(`---- ${newGame}`);
   });
 
   socket.on("newPlayer", async (playerData) => {
     let newPlayer = PlayerUtils.getPlayerModelFromMap(playerData);
-    GameUtils.gameExists(newPlayer.gamePin).then((gameExists) => {
-      if (gameExists) {
-        newPlayer.save();
-        io.to(playerData.gamePin).emit("newPlayer", playerData);
-        socket.join(playerData.gamePin);
-      } else {
-        console.log(`Game ${newPlayer.gamePin} doesn't exist!`);
-        socket.emit("noGameFound");
-      }
-    });
+    let gamePin = newPlayer.gamePin;
+    let gameExists = await GameUtils.gameExists(gamePin);
+    if (!gameExists) {
+      console.log(`Game ${gamePin} doesn't exist!`);
+      socket.emit("noGameFound");
+      return;
+    }
+    newPlayer.save();
+    io.to(gamePin).emit("newPlayer", playerData);
+    let players = await PlayerUtils.getAllPlayersFromGame(gamePin);
+    io.to(playerData.socketId).emit("listPlayers", players);
+    socket.join(gamePin);
   });
 
   socket.on("disconnect", async function () {
@@ -81,5 +79,27 @@ io.on("connection", (socket) => {
     let hostId = hostData.hostId;
     let games = await GameUtils.getAllGamesFromHost(hostId);
     io.to(hostData.socketId).emit("listGames", games);
+  });
+
+  socket.on("hostJoin", async function (hostData) {
+    let gamePin = hostData.gamePin;
+    let players = await PlayerUtils.getAllPlayersFromGame(gamePin);
+    socket.join(gamePin);
+    io.to(hostData.socketId).emit("listPlayers", players);
+    let game = await GameUtils.getGameFromPin(gamePin);
+    io.to(hostData.socketId).emit("gameInfo", game);
+  });
+
+  socket.on("listPlayers", async function (gameData) {
+    let gamePin = gameData.gamePin;
+    let players = await PlayerUtils.getAllPlayersFromGame(gamePin);
+    io.to(gamePin).emit("listPlayers", players);
+  });
+
+  socket.on("goLive", async (hostData) => {
+    let gamePin = hostData.gamePin;
+    await GameUtils.startGame(gamePin);
+    let game = await GameUtils.getGameFromPin(gamePin);
+    io.to(gamePin).emit("startGame", game);
   });
 });
