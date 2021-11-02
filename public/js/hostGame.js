@@ -54,7 +54,6 @@ socket.on("listPlayers", (players) => {
 });
 
 socket.on("gameInfo", (game) => {
-  //   $(".game-info .game-title").empty();
   $(".game-info .game-title").html(`Quiz: ${game.title}`);
   $(".game-info .game-pin").html(`PIN: ${game.gamePin}`);
 });

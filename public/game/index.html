@@ -5,22 +5,21 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Quiz</title>
+    <link rel="stylesheet" href="../css/game.css" />
   </head>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <body>
     <div class="quiz">
-      <div class="time-remaining"></div>
       <div class="quiz-header">
+        <div class="time-remaining" data-style="smooth" style="--duration: 5">
+          <div class="progress-bar"></div>
+        </div>
+        <div class="seconds-left">30</div>
         <div class="quiz-title"></div>
         <div class="question-title"></div>
       </div>
       <div class="quiz-body">
-        <div class="alternatives">
-          <div class="alternative"></div>
-          <div class="alternative"></div>
-          <div class="alternative"></div>
-          <div class="alternative"></div>
-        </div>
+        <div class="alternatives"></div>
       </div>
     </div>
   </body>

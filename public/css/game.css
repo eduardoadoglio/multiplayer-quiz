@@ -1,0 +1,92 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap");
+
+* {
+  font-family: "Roboto", sans-serif;
+}
+
+@keyframes progress {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
+}
+
+html,
+body {
+  margin: 0px;
+  height: 100%;
+}
+
+.quiz {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.time-remaining {
+  width: 100%;
+  background-color: #cccccc;
+  overflow: hidden;
+}
+
+.time-remaining .progress-bar {
+  width: 0%;
+  height: 10px;
+  animation: progress 30s linear;
+  background: linear-gradient(to bottom, red, #900);
+}
+
+.seconds-left {
+  font-size: 40px;
+  text-align: center;
+}
+
+.quiz-header {
+  width: 100%;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 1;
+}
+
+.quiz-body {
+  flex-grow: 2;
+}
+
+.quiz-body .alternatives {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.alternatives .alternative {
+  display: flex;
+  flex: 1 0 30%;
+  margin: 5px;
+  height: 100px;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.alternatives .alternative:nth-child(1) {
+  background-color: #457ab2;
+}
+
+.alternatives .alternative:nth-child(2) {
+  background-color: #dc3545;
+}
+
+.alternatives .alternative:nth-child(3) {
+  background-color: #45b260;
+}
+
+.alternatives .alternative:nth-child(4) {
+  background-color: #dcec48;
+}
