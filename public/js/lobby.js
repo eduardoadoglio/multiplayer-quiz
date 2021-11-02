@@ -8,6 +8,7 @@ socket.on("connect", function () {
   playerData.playerId = getPlayerId();
   playerData.socketId = socket.id;
   console.log(`-- Player data is ${JSON.stringify(playerData)}`);
+  localStorage.setItem("currentPlayer", JSON.stringify(playerData));
   socket.emit("newPlayer", playerData);
 });
 

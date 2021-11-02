@@ -102,4 +102,13 @@ io.on("connection", (socket) => {
     let game = await GameUtils.getGameFromPin(gamePin);
     io.to(gamePin).emit("startGame", game);
   });
+
+  socket.on("quizAnswer", async (answerData) => {
+    let correct = answerData.correct;
+    if (correct) {
+      let playerId = answerData.playerId;
+      let scoreIncrease = answerData.scoreIncrease;
+      await PlayerUtils.increasePlayerScore(playerId, scoreIncrease);
+    }
+  });
 });

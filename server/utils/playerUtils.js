@@ -28,6 +28,13 @@ class PlayerUtils {
     let players = await playerModel.find({ gamePin: gamePin }).exec();
     return players;
   }
+
+  static async increasePlayerScore(playerId, scoreIncrease) {
+    return await playerModel.findOneAndUpdate(
+      { playerId: playerId },
+      { $inc: { score: scoreIncrease } }
+    );
+  }
 }
 
 module.exports = PlayerUtils;
