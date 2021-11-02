@@ -71,7 +71,7 @@ class GameUtils {
   }
 
   static async startGame(gamePin) {
-    let gameWithTimers = await GameUtils.startTimers(gamePin);
+    await GameUtils.startTimers(gamePin);
     return await gameModel.findOneAndUpdate(
       { gamePin: gamePin },
       { isLive: true },

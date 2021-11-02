@@ -17,10 +17,11 @@ class PlayerUtils {
     return player;
   }
 
+  static async removeOtherPlayersWithPlayerId(playerId) {
+    await playerModel.deleteMany({ playerId: playerId });
+  }
+
   static async removePlayerFromGames(socketId) {
-    console.log(
-      `Attempting to remove all player records with socketId = ${socketId}`
-    );
     await playerModel.deleteMany({ socketId: socketId });
   }
 
@@ -34,6 +35,14 @@ class PlayerUtils {
       { playerId: playerId },
       { $inc: { score: scoreIncrease } }
     );
+  }
+
+  static async getLeaderBoardForGame(gamePin) {
+    let players = await playerModel
+      .find({ gamePin: gamePin })
+      .sort({ score: -1 })
+      .exec();
+    return players;
   }
 }
 

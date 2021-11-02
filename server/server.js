@@ -52,6 +52,7 @@ io.on("connection", (socket) => {
 
   socket.on("newPlayer", async (playerData) => {
     let newPlayer = PlayerUtils.getPlayerModelFromMap(playerData);
+    await PlayerUtils.removeOtherPlayersWithPlayerId(newPlayer.playerId);
     let gamePin = newPlayer.gamePin;
     let gameExists = await GameUtils.gameExists(gamePin);
     if (!gameExists) {
@@ -109,5 +110,11 @@ io.on("connection", (socket) => {
       let scoreIncrease = answerData.scoreIncrease;
       await PlayerUtils.increasePlayerScore(playerId, scoreIncrease);
     }
+  });
+
+  socket.on("showLeaderBoard", async (gameData) => {
+    let gamePin = gameData.gamePin;
+    let playerRanking = await PlayerUtils.getLeaderBoardForGame(gamePin);
+    io.to(gamePin).emit("showLeaderBoard", playerRanking);
   });
 });
