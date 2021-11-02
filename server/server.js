@@ -98,8 +98,7 @@ io.on("connection", (socket) => {
 
   socket.on("goLive", async (hostData) => {
     let gamePin = hostData.gamePin;
-    await GameUtils.startGame(gamePin);
-    let game = await GameUtils.getGameFromPin(gamePin);
+    let game = await GameUtils.startGame(gamePin);
     io.to(gamePin).emit("startGame", game);
   });
 

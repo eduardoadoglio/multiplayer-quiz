@@ -71,11 +71,37 @@ class GameUtils {
   }
 
   static async startGame(gamePin) {
+    let gameWithTimers = await GameUtils.startTimers(gamePin);
     return await gameModel.findOneAndUpdate(
       { gamePin: gamePin },
       { isLive: true },
       { new: true }
     );
+  }
+
+  static async startTimers(gamePin) {
+    let game = await GameUtils.getGameFromPin(gamePin);
+    let setExpression = GameUtils._generateStartTimersSetExpression(game);
+    return await gameModel.findOneAndUpdate(
+      { gamePin: gamePin },
+      { $set: setExpression }
+    );
+  }
+
+  static _generateStartTimersSetExpression(game) {
+    let setExpression = {};
+    let currentTime = Date.now();
+    let thirtySecondsInMilisseconds = 30 * 1000;
+    setExpression["currentQuestion.startAt"] = currentTime;
+    setExpression["currentQuestion.endAt"] =
+      currentTime + thirtySecondsInMilisseconds;
+    game.questions.forEach(function (_, i) {
+      setExpression[`questions.${i}.startAt`] =
+        currentTime + i * thirtySecondsInMilisseconds;
+      setExpression[`questions.${i}.endAt`] =
+        currentTime + (i + 1) * thirtySecondsInMilisseconds;
+    });
+    return setExpression;
   }
 }
 
