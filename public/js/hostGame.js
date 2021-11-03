@@ -2,8 +2,6 @@ import UrlParameters from "../utils/urlParameters.js";
 import CookieUtils from "../utils/CookieUtils.js";
 import UuidUtils from "../utils/UuidUtils.js";
 let socket = io();
-let shouldShowLeaderBoard = true;
-let shouldShowNextQuestion = false;
 
 socket.on("connect", function () {
   let hostData = UrlParameters.getAllUrlParameters();
@@ -90,25 +88,29 @@ setInterval(function () {
   let currentTime = Date.now();
   let currentGame = getCurrentGame();
   let currentQuestion = currentGame.currentQuestion;
+  let isShowingLeaderBoard = $(".leaderboard").is(":visible");
+  let isShowingQuestion = $(".quiz").is(":visible");
   let timeLeft = 0;
-  if (shouldShowLeaderBoard) {
+  if (isShowingLeaderBoard) {
+    timeLeft = 30 - (currentTime - currentQuestion.endAt) / 1000;
+  } else if (isShowingQuestion) {
     timeLeft = (currentQuestion.endAt - currentTime) / 1000;
-    if (timeLeft <= 0) {
-      timeLeft = 0;
-      shouldShowLeaderBoard = false;
-      socket.emit("showLeaderBoard", currentGame);
-    }
-  } else if (shouldShowNextQuestion) {
-    let lastQuestionEndedAt = currentQuestion.endAt;
-    timeLeft = 30 - (currentTime - lastQuestionEndedAt) / 1000;
-    if (timeLeft <= 0) {
-      timeLeft = 0;
-      shouldShowNextQuestion = false;
-      socket.emit("nextQuestion", currentGame);
-    }
   }
+  if (timeLeft <= 0) {
+    timeLeft = 0;
+  }
+  if (isShowingQuestion && timeLeft === 0) {
+    $(".quiz").css("display", "none");
+    $(".leaderboard").css("display", "flex");
+    socket.emit("showLeaderBoard", currentGame);
+  } else if (isShowingLeaderBoard && timeLeft === 0) {
+    $(".leaderboard").css("display", "none");
+    $(".quiz").css("display", "flex");
+    socket.emit("nextQuestion", currentGame);
+  }
+
   $(".seconds-left").html(Math.trunc(timeLeft));
-}, 300);
+}, 100);
 
 function getCurrentGame() {
   return JSON.parse(localStorage.getItem("currentGame"));
@@ -119,7 +121,6 @@ socket.on("nextQuestion", (game) => {
   if (game.currentQuestion == undefined) return;
   let currentQuestion = game.currentQuestion;
   let currentAnswers = currentQuestion.answers;
-  $(".quiz-header .quiz-title").html(game.title);
   $(".quiz-header .question-title").html(currentQuestion.title);
   $(".quiz-body .alternatives").empty();
   currentAnswers.forEach(function (answer, i) {
@@ -128,7 +129,6 @@ socket.on("nextQuestion", (game) => {
     `);
   });
   resetProgressBar();
-  shouldShowLeaderBoard = true;
 });
 
 socket.on("showLeaderBoard", (playerRanking) => {
@@ -157,7 +157,6 @@ socket.on("showLeaderBoard", (playerRanking) => {
     `);
   });
   resetProgressBar();
-  shouldShowNextQuestion = true;
 });
 
 function getPodium(playerRanking) {

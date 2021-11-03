@@ -69,6 +69,7 @@ body {
 }
 .time-remaining {
   width: 100%;
+  height: 10px;
   background-color: #cccccc;
   overflow: hidden;
 }

@@ -106,10 +106,12 @@ class GameUtils {
       if (questions[i].questionNumber == currentQuestion.questionNumber) {
         if (questions.length < i + 2) break;
         nextQuestion = questions[i + 1];
+        let currentTime = Date.now();
+        let thirtySecondsInMilisseconds = 30 * 1000;
+        nextQuestion.startAt = currentTime;
+        nextQuestion.endAt = currentTime + thirtySecondsInMilisseconds;
       }
     }
-
-    console.log(`nextQuestion is ${nextQuestion}`);
     await gameModel.findOneAndUpdate(
       { _id: game._id },
       { $set: { currentQuestion: nextQuestion } },
