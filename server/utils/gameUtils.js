@@ -34,6 +34,7 @@ class GameUtils {
         new questionModel({
           title: question.title,
           answers: GameUtils._getAnswersFromQuestion(question),
+          questionNumber: question.questionNumber,
         })
       );
     });
@@ -71,11 +72,55 @@ class GameUtils {
   }
 
   static async startGame(gamePin) {
+    await GameUtils.startTimersForCurrentQuestion(gamePin);
     return await gameModel.findOneAndUpdate(
       { gamePin: gamePin },
       { isLive: true },
       { new: true }
     );
+  }
+
+  static async startTimersForCurrentQuestion(gamePin) {
+    let setExpression = GameUtils._generateStartTimersSetExpression();
+    return await gameModel.findOneAndUpdate(
+      { gamePin: gamePin },
+      { $set: setExpression }
+    );
+  }
+
+  static _generateStartTimersSetExpression() {
+    let currentTime = Date.now();
+    let thirtySecondsInMilisseconds = 30 * 1000;
+    let setExpression = {
+      "currentQuestion.startAt": currentTime,
+      "currentQuestion.endAt": currentTime + thirtySecondsInMilisseconds,
+    };
+    return setExpression;
+  }
+
+  static async goToNextQuestion(game) {
+    let questions = game.questions;
+    let currentQuestion = game.currentQuestion;
+    let nextQuestion = null;
+    for (let i = 0; i < questions.length; i++) {
+      if (questions[i].questionNumber == currentQuestion.questionNumber) {
+        if (questions.length < i + 2) break;
+        nextQuestion = questions[i + 1];
+        let currentTime = Date.now();
+        let thirtySecondsInMilisseconds = 30 * 1000;
+        nextQuestion.startAt = currentTime;
+        nextQuestion.endAt = currentTime + thirtySecondsInMilisseconds;
+      }
+    }
+    let newGame = await gameModel.findOneAndUpdate(
+      { _id: game._id },
+      { $set: { currentQuestion: nextQuestion } },
+      { new: true }
+    );
+    if (nextQuestion) {
+      newGame = await GameUtils.startTimersForCurrentQuestion(game.gamePin);
+    }
+    return newGame;
   }
 }
 

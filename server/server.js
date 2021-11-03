@@ -52,6 +52,7 @@ io.on("connection", (socket) => {
 
   socket.on("newPlayer", async (playerData) => {
     let newPlayer = PlayerUtils.getPlayerModelFromMap(playerData);
+    await PlayerUtils.removeOtherPlayersWithPlayerId(newPlayer.playerId);
     let gamePin = newPlayer.gamePin;
     let gameExists = await GameUtils.gameExists(gamePin);
     if (!gameExists) {
@@ -98,8 +99,29 @@ io.on("connection", (socket) => {
 
   socket.on("goLive", async (hostData) => {
     let gamePin = hostData.gamePin;
-    await GameUtils.startGame(gamePin);
-    let game = await GameUtils.getGameFromPin(gamePin);
+    let game = await GameUtils.startGame(gamePin);
     io.to(gamePin).emit("startGame", game);
+  });
+
+  socket.on("quizAnswer", async (answerData) => {
+    let correct = answerData.correct;
+    if (correct) {
+      let playerId = answerData.playerId;
+      let scoreIncrease = answerData.scoreIncrease;
+      await PlayerUtils.increasePlayerScore(playerId, scoreIncrease);
+    }
+  });
+
+  socket.on("showLeaderBoard", async (gameData) => {
+    let gamePin = gameData.gamePin;
+    let playerRanking = await PlayerUtils.getLeaderBoardForGame(gamePin);
+    io.to(gamePin).emit("showLeaderBoard", playerRanking);
+  });
+
+  socket.on("nextQuestion", async (gameData) => {
+    console.log("-- Received nextQuestion");
+    let gamePin = gameData.gamePin;
+    let newGame = await GameUtils.goToNextQuestion(gameData);
+    io.to(gamePin).emit("nextQuestion", newGame);
   });
 });

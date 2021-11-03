@@ -9,6 +9,12 @@
   </head>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <body>
+    <div class="time-info">
+      <div class="time-remaining">
+        <div class="progress-bar"></div>
+      </div>
+      <div class="seconds-left">30</div>
+    </div>
     <div class="game-info">
       <div class="game-title"></div>
       <div class="game-pin"></div>
@@ -17,8 +23,22 @@
       </div>
     </div>
     <div class="players-info">
-      <h1>Jogadores</h1>
       <div class="players"></div>
+    </div>
+    <div class="quiz">
+      <div class="quiz-header">
+        <div class="quiz-title"></div>
+        <div class="question-title"></div>
+      </div>
+      <div class="quiz-body">
+        <div class="alternatives"></div>
+      </div>
+    </div>
+    <div class="leaderboard">
+      <div class="podium second-place" id="2"></div>
+      <div class="podium first-place" id="1"></div>
+      <div class="podium third-place" id="3"></div>
+      <div class="player-list remaining-players"></div>
     </div>
   </body>
   <script src="/socket.io/socket.io.js"></script>
