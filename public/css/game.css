@@ -99,4 +99,5 @@ body {
 
 .leaderboard {
   display: none;
+  flex-flow: column wrap;
 }
