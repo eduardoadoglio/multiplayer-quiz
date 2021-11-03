@@ -50,6 +50,8 @@ socket.on("showLeaderBoard", (playerRanking) => {
         </div>
     `);
   });
+  resetProgressBar();
+  shouldShowNextQuestion = true;
 });
 
 function getPodium(playerRanking) {
@@ -68,6 +70,13 @@ function getPlayersAfterPodium(playerRanking) {
     players.push(player);
   });
   return players;
+}
+
+function resetProgressBar() {
+  $(".time-remaining div").removeClass("progress-bar");
+  setTimeout(function () {
+    $(".time-remaining div").addClass("progress-bar");
+  }, 10);
 }
 
 setInterval(function () {
