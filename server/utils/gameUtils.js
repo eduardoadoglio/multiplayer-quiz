@@ -112,12 +112,14 @@ class GameUtils {
         nextQuestion.endAt = currentTime + thirtySecondsInMilisseconds;
       }
     }
-    await gameModel.findOneAndUpdate(
+    let newGame = await gameModel.findOneAndUpdate(
       { _id: game._id },
       { $set: { currentQuestion: nextQuestion } },
       { new: true }
     );
-    let newGame = await GameUtils.startTimersForCurrentQuestion(game.gamePin);
+    if (nextQuestion) {
+      newGame = await GameUtils.startTimersForCurrentQuestion(game.gamePin);
+    }
     return newGame;
   }
 }

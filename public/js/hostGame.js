@@ -84,7 +84,7 @@ socket.on("startGame", (game) => {
 });
 
 setInterval(function () {
-  if (!$(".time-info").is(":visible")) return;
+  if (!$(".time-info").is(":visible") || $(".game-over").is(":visible")) return;
   let currentTime = Date.now();
   let currentGame = getCurrentGame();
   let currentQuestion = currentGame.currentQuestion;
@@ -99,13 +99,11 @@ setInterval(function () {
   if (timeLeft <= 0) {
     timeLeft = 0;
   }
-  if (isShowingQuestion && timeLeft === 0) {
+  if (isShowingQuestion && timeLeft == 0) {
     $(".quiz").css("display", "none");
-    $(".leaderboard").css("display", "flex");
     socket.emit("showLeaderBoard", currentGame);
   } else if (isShowingLeaderBoard && timeLeft === 0) {
     $(".leaderboard").css("display", "none");
-    $(".quiz").css("display", "flex");
     socket.emit("nextQuestion", currentGame);
   }
 
@@ -118,7 +116,14 @@ function getCurrentGame() {
 
 socket.on("nextQuestion", (game) => {
   localStorage.setItem("currentGame", JSON.stringify(game));
-  if (game.currentQuestion == undefined) return;
+  if (game.currentQuestion == null) {
+    $(".leaderboard").addClass("game-over");
+    $(".timer-info").css("display", "none");
+    $(".quiz").css("display", "none");
+    $(".leaderboard").css("display", "flex");
+    return;
+  }
+  $(".quiz").css("display", "flex");
   let currentQuestion = game.currentQuestion;
   let currentAnswers = currentQuestion.answers;
   $(".quiz-header .question-title").html(currentQuestion.title);
@@ -132,6 +137,7 @@ socket.on("nextQuestion", (game) => {
 });
 
 socket.on("showLeaderBoard", (playerRanking) => {
+  $(".leaderboard").css("display", "flex");
   // For some reason splicing the array makes it out of order, so
   // this is a quick solution
   let podium = getPodium(playerRanking);
