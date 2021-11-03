@@ -39,12 +39,13 @@ function getTitleFromDOM() {
 
 function getQuestionsFromDOM() {
   let questions = [];
-  $(".questions .question").each(function (_, question) {
+  $(".questions .question").each(function (i, question) {
     let questionTitle = $(this).find(".question-title #question").val();
     let answers = getAnswersFromQuestion(question);
     questions.push({
       title: questionTitle,
       answers: answers,
+      questionNumber: i,
     });
   });
   return questions;

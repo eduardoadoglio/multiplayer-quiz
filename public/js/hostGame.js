@@ -108,11 +108,28 @@ setInterval(function () {
     }
   }
   $(".seconds-left").html(Math.trunc(timeLeft));
-}, 100);
+}, 300);
 
 function getCurrentGame() {
   return JSON.parse(localStorage.getItem("currentGame"));
 }
+
+socket.on("nextQuestion", (game) => {
+  localStorage.setItem("currentGame", JSON.stringify(game));
+  if (game.currentQuestion == undefined) return;
+  let currentQuestion = game.currentQuestion;
+  let currentAnswers = currentQuestion.answers;
+  $(".quiz-header .quiz-title").html(game.title);
+  $(".quiz-header .question-title").html(currentQuestion.title);
+  $(".quiz-body .alternatives").empty();
+  currentAnswers.forEach(function (answer, i) {
+    $(".quiz-body .alternatives").append(`
+        <div class="alternative" data-answer-number="${i}"> ${answer.title} </div>
+    `);
+  });
+  resetProgressBar();
+  shouldShowLeaderBoard = true;
+});
 
 socket.on("showLeaderBoard", (playerRanking) => {
   // For some reason splicing the array makes it out of order, so
@@ -165,5 +182,5 @@ function resetProgressBar() {
   $(".time-remaining div").removeClass("progress-bar");
   setTimeout(function () {
     $(".time-remaining div").addClass("progress-bar");
-  }, 10);
+  }, 100);
 }

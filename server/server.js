@@ -117,4 +117,11 @@ io.on("connection", (socket) => {
     let playerRanking = await PlayerUtils.getLeaderBoardForGame(gamePin);
     io.to(gamePin).emit("showLeaderBoard", playerRanking);
   });
+
+  socket.on("nextQuestion", async (gameData) => {
+    console.log("-- Received nextQuestion");
+    let gamePin = gameData.gamePin;
+    let newGame = await GameUtils.goToNextQuestion(gameData);
+    io.to(gamePin).emit("nextQuestion", newGame);
+  });
 });

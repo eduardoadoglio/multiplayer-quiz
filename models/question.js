@@ -8,6 +8,7 @@ let questionSchema = Schema({
   answers: { type: [AnswerSchema] },
   startAt: { type: Number, default: 0 },
   endAt: { type: Number, default: 0 },
+  questionNumber: { type: Number, default: 0 },
 });
 
 question = mongoose.model("Question", questionSchema);

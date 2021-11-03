@@ -1,7 +1,6 @@
 export default class UrlParameters {
   static getAllUrlParameters() {
     let searchPageURL = window.location.search.substring(1);
-    console.log(`searchPageURL = ${searchPageURL}`);
     let searchURLVariables = searchPageURL.split("&");
     let searchParameterName;
     let urlParameters = {};

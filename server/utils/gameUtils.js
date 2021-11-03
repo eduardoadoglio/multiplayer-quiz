@@ -34,6 +34,7 @@ class GameUtils {
         new questionModel({
           title: question.title,
           answers: GameUtils._getAnswersFromQuestion(question),
+          questionNumber: question.questionNumber,
         })
       );
     });
@@ -71,7 +72,7 @@ class GameUtils {
   }
 
   static async startGame(gamePin) {
-    await GameUtils.startTimers(gamePin);
+    await GameUtils.startTimersForCurrentQuestion(gamePin);
     return await gameModel.findOneAndUpdate(
       { gamePin: gamePin },
       { isLive: true },
@@ -79,29 +80,43 @@ class GameUtils {
     );
   }
 
-  static async startTimers(gamePin) {
-    let game = await GameUtils.getGameFromPin(gamePin);
-    let setExpression = GameUtils._generateStartTimersSetExpression(game);
+  static async startTimersForCurrentQuestion(gamePin) {
+    let setExpression = GameUtils._generateStartTimersSetExpression();
     return await gameModel.findOneAndUpdate(
       { gamePin: gamePin },
       { $set: setExpression }
     );
   }
 
-  static _generateStartTimersSetExpression(game) {
-    let setExpression = {};
+  static _generateStartTimersSetExpression() {
     let currentTime = Date.now();
     let thirtySecondsInMilisseconds = 30 * 1000;
-    setExpression["currentQuestion.startAt"] = currentTime;
-    setExpression["currentQuestion.endAt"] =
-      currentTime + thirtySecondsInMilisseconds;
-    game.questions.forEach(function (_, i) {
-      setExpression[`questions.${i}.startAt`] =
-        currentTime + i * thirtySecondsInMilisseconds;
-      setExpression[`questions.${i}.endAt`] =
-        currentTime + (i + 1) * thirtySecondsInMilisseconds;
-    });
+    let setExpression = {
+      "currentQuestion.startAt": currentTime,
+      "currentQuestion.endAt": currentTime + thirtySecondsInMilisseconds,
+    };
     return setExpression;
+  }
+
+  static async goToNextQuestion(game) {
+    let questions = game.questions;
+    let currentQuestion = game.currentQuestion;
+    let nextQuestion = null;
+    for (let i = 0; i < questions.length; i++) {
+      if (questions[i].questionNumber == currentQuestion.questionNumber) {
+        if (questions.length < i + 2) break;
+        nextQuestion = questions[i + 1];
+      }
+    }
+
+    console.log(`nextQuestion is ${nextQuestion}`);
+    await gameModel.findOneAndUpdate(
+      { _id: game._id },
+      { $set: { currentQuestion: nextQuestion } },
+      { new: true }
+    );
+    let newGame = await GameUtils.startTimersForCurrentQuestion(game.gamePin);
+    return newGame;
   }
 }
 
