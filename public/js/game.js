@@ -2,6 +2,8 @@ import UrlParameters from "../utils/urlParameters.js";
 import CookieUtils from "../utils/CookieUtils.js";
 import UuidUtils from "../utils/UuidUtils.js";
 let socket = io();
+let shouldShowLeaderBoard = true;
+let shouldShowNextQuestion = false;
 
 socket.on("connect", function () {
   let playerData = getCurrentPlayer();
@@ -30,7 +32,7 @@ socket.on("showLeaderBoard", (playerRanking) => {
   let podium = getPodium(playerRanking);
   let getRankingAfterPodium = getPlayersAfterPodium(playerRanking);
   $(".quiz").css("display", "none");
-  $(".leader-board").css("display", "flex");
+  $(".leaderboard").css("display", "flex");
   podium.forEach(function (player, i) {
     let position = i + 1;
     $(`.leaderboard #${position}`).append(`
@@ -68,22 +70,27 @@ function getPlayersAfterPodium(playerRanking) {
   return players;
 }
 
-let calledLeaderBoard = false;
-
-// TODO: Implement this only on host side, since having multiple connections makes this troublesome
 setInterval(function () {
+  if (!$(".time-info").is(":visible")) return;
   let currentTime = Date.now();
   let currentGame = getCurrentGame();
   let currentQuestion = currentGame.currentQuestion;
-  let timeLeft = (currentQuestion.endAt - currentTime) / 1000;
-  if (timeLeft <= 0) {
-    timeLeft = 0;
-    if (!calledLeaderBoard) {
-      calledLeaderBoard = true;
-      socket.emit("showLeaderBoard", currentGame);
+  let timeLeft = 0;
+  if (shouldShowLeaderBoard) {
+    timeLeft = (currentQuestion.endAt - currentTime) / 1000;
+    if (timeLeft <= 0) {
+      timeLeft = 0;
+      shouldShowLeaderBoard = false;
+    }
+  } else if (shouldShowNextQuestion) {
+    let lastQuestionEndedAt = currentQuestion.endAt;
+    timeLeft = 30 - (currentTime - lastQuestionEndedAt) / 1000;
+    if (timeLeft <= 0) {
+      timeLeft = 0;
+      shouldShowNextQuestion = false;
     }
   }
-  $(".seconds-left").html(timeLeft);
+  $(".seconds-left").html(Math.trunc(timeLeft));
 }, 100);
 
 function setCurrentProgress() {

@@ -27,6 +27,12 @@ body {
   align-items: center;
 }
 
+.time-info {
+  display: flex;
+  flex-flow: column wrap;
+  width: 100%;
+}
+
 .time-remaining {
   width: 100%;
   background-color: #cccccc;
@@ -89,4 +95,8 @@ body {
 
 .alternatives .alternative:nth-child(4) {
   background-color: #dcec48;
+}
+
+.leaderboard {
+  display: none;
 }
