@@ -44,8 +44,9 @@ socket.on("noGameFound", function () {
 });
 
 socket.on("startGame", (game) => {
+  localStorage.removeItem("currentGame");
   localStorage.setItem("currentGame", JSON.stringify(game));
-  window.location.href = "../game/";
+  window.location.href = "../game/index.html";
 });
 
 socket.on("listPlayers", (players) => {
