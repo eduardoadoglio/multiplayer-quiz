@@ -32,8 +32,9 @@ socket.on("listGames", (games) => {
     let gameTitle = game.title;
     $(".games").append(
       `<div class="game-card" data-pin="${gamePin}">
-        <div class="game-title">Titulo: ${gameTitle}</div>
-        <div class="game-pin">PIN: ${gamePin}</div>
+        <div class="game-title">${gameTitle}</div>
+        <hr>
+        <div class="game-pin">${gamePin}</div>
       </div>`
     );
   });
