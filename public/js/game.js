@@ -2,8 +2,6 @@ import UrlParameters from "../utils/urlParameters.js";
 import CookieUtils from "../utils/CookieUtils.js";
 import UuidUtils from "../utils/UuidUtils.js";
 let socket = io();
-let shouldShowLeaderBoard = true;
-let shouldShowNextQuestion = false;
 
 socket.on("connect", function () {
   let playerData = getCurrentPlayer();
@@ -26,7 +24,60 @@ socket.on("disconnect", function () {
   socket.emit("playerLeaving", playerData);
 });
 
+socket.on("startGame", (game) => {});
+
+setInterval(function () {
+  if (!$(".time-info").is(":visible") || $(".game-over").is(":visible")) return;
+  let currentTime = Date.now();
+  let currentGame = getCurrentGame();
+  let currentQuestion = currentGame.currentQuestion;
+  let isShowingLeaderBoard = $(".leaderboard").is(":visible");
+  let isShowingQuestion = $(".quiz").is(":visible");
+  let timeLeft = 0;
+  if (isShowingLeaderBoard) {
+    timeLeft = 30 - (currentTime - currentQuestion.endAt) / 1000;
+  } else if (isShowingQuestion) {
+    timeLeft = (currentQuestion.endAt - currentTime) / 1000;
+  }
+  if (timeLeft <= 0) {
+    timeLeft = 0;
+  }
+
+  $(".seconds-left").html(Math.trunc(timeLeft));
+}, 100);
+
+socket.on("nextQuestion", (game) => {
+  localStorage.setItem("currentGame", JSON.stringify(game));
+  if (game.currentQuestion == null) {
+    $(".leaderboard").addClass("game-over");
+    $(".timer-info").css("display", "none");
+    $(".quiz").css("display", "none");
+    $(".leaderboard").css("display", "flex");
+    return;
+  }
+  $(".leaderboard").empty();
+  $(".leaderboard").css("display", "none");
+  $(".quiz").css("display", "flex");
+  let currentQuestion = game.currentQuestion;
+  let currentAnswers = currentQuestion.answers;
+  $(".quiz-header .question-title").html(currentQuestion.title);
+  $(".quiz-body .alternatives").empty();
+  currentAnswers.forEach(function (answer, i) {
+    let row = i < 2 ? "first-row" : "second-row";
+    $(`.quiz-body .alternatives .${row}`).append(`
+      <div class="alternative-card" data-answer-number="${i}">
+        <div class="alternative-icon">
+          <i class="fas fa-${icons[i]}"></i>
+        </div>
+        <div class="alternative alternative-text"> ${answer.title} </div>
+      </div>`);
+  });
+  resetProgressBar();
+});
+
 socket.on("showLeaderBoard", (playerRanking) => {
+  $(".quiz").css("display", "none");
+  $(".leaderboard").css("display", "flex");
   // For some reason splicing the array makes it out of order, so
   // this is a quick solution
   let podium = getPodium(playerRanking);
@@ -42,6 +93,7 @@ socket.on("showLeaderBoard", (playerRanking) => {
       </div>
     `);
   });
+  $(".remaining-players").empty();
   getRankingAfterPodium.forEach(function (player, i) {
     $(".remaining-players").append(`
         <div class="player-card" id="${player.playerId}"> 
@@ -51,7 +103,6 @@ socket.on("showLeaderBoard", (playerRanking) => {
     `);
   });
   resetProgressBar();
-  shouldShowNextQuestion = true;
 });
 
 function getPodium(playerRanking) {
@@ -76,31 +127,8 @@ function resetProgressBar() {
   $(".time-remaining div").removeClass("progress-bar");
   setTimeout(function () {
     $(".time-remaining div").addClass("progress-bar");
-  }, 10);
+  }, 100);
 }
-
-setInterval(function () {
-  if (!$(".time-info").is(":visible")) return;
-  let currentTime = Date.now();
-  let currentGame = getCurrentGame();
-  let currentQuestion = currentGame.currentQuestion;
-  let timeLeft = 0;
-  if (shouldShowLeaderBoard) {
-    timeLeft = (currentQuestion.endAt - currentTime) / 1000;
-    if (timeLeft <= 0) {
-      timeLeft = 0;
-      shouldShowLeaderBoard = false;
-    }
-  } else if (shouldShowNextQuestion) {
-    let lastQuestionEndedAt = currentQuestion.endAt;
-    timeLeft = 30 - (currentTime - lastQuestionEndedAt) / 1000;
-    if (timeLeft <= 0) {
-      timeLeft = 0;
-      shouldShowNextQuestion = false;
-    }
-  }
-  $(".seconds-left").html(Math.trunc(timeLeft));
-}, 100);
 
 function setCurrentProgress() {
   let currentProgress =
@@ -115,22 +143,32 @@ $(document).ready(function () {
   if (!game) {
     window.location.href = "../";
   }
+  $(".players-info").css("display", "none");
+  $(".game-info").css("display", "none");
+  $(".quiz").css("display", "flex");
+  $(".time-info").css("display", "flex");
+
+  localStorage.setItem("currentGame", JSON.stringify(game));
+
   let currentQuestion = game.currentQuestion;
   let currentAnswers = currentQuestion.answers;
-  $(".quiz-header .quiz-title").html(game.title);
   $(".quiz-header .question-title").html(currentQuestion.title);
+  let icons = ["circle", "ethereum", "heart", "square"];
   currentAnswers.forEach(function (answer, i) {
-    $(".quiz-body .alternatives").append(`
-        <div class="alternative" data-answer-number="${i}"> ${answer.title} </div>
-    `);
+    let row = i < 2 ? "first-row" : "second-row";
+    $(`.quiz-body .alternatives .${row}`).append(`
+      <div class="alternative-card" data-answer-number="${i}">
+        <div class="alternative-icon">
+          <i class="fas fa-${icons[i]}"></i>
+        </div>
+        <div class="alternative alternative-text"> ${answer.title} </div>
+      </div>`);
   });
 });
 
-$(".alternatives").on("click", ".alternative", function () {
+$(".alternatives").on("click", ".alternative-card", function () {
   let currentGame = getCurrentGame();
   let currentAnswers = currentGame.currentQuestion.answers;
-  console.log(`Current answers: ${currentAnswers}`);
-  console.log(`This answer is index ${$(this).data("answer-number")}`);
   let correct = currentAnswers[$(this).data("answer-number")].correct;
   let answerData = {
     playerId: getPlayerId(),
@@ -138,6 +176,11 @@ $(".alternatives").on("click", ".alternative", function () {
     correct: correct,
     scoreIncrease: getScoreIncrease(),
   };
+  $(".alternatives .alternative-card")
+    .not(this)
+    .css("filter", "grayscale(60%)");
+
+  $(".alternatives .alternative-card").css("pointer-events, disabled");
   socket.emit("quizAnswer", answerData);
 });
 

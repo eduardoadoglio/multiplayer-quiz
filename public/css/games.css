@@ -21,9 +21,10 @@ body {
 
 .host-welcome {
   display: flex;
-  flex-flow: column wrap;
+  flex-flow: column nowrap;
   background-color: #964eb5;
   height: 100%;
+  overflow-y: auto;
 }
 
 .host-welcome-header {

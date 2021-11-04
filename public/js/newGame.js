@@ -40,7 +40,7 @@ function getTitleFromDOM() {
 function getQuestionsFromDOM() {
   let questions = [];
   $(".questions .question").each(function (i, question) {
-    let questionTitle = $(this).find(".question-title #question").val();
+    let questionTitle = $(this).find(".game-input.regular #question").val();
     let answers = getAnswersFromQuestion(question);
     questions.push({
       title: questionTitle,
@@ -54,7 +54,7 @@ function getQuestionsFromDOM() {
 function getAnswersFromQuestion(question) {
   let answers = [];
   $(question)
-    .find(".question-answer")
+    .find(".question-alternative")
     .each(function (_, obj) {
       let answerTitle = $(this).find("#alternative").val();
       let correctAnswer = $(this).find("#right-answer").prop("checked");

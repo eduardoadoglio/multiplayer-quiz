@@ -10,7 +10,6 @@ socket.on("connect", function () {
   }
   hostData.hostId = getHostId();
   hostData.socketId = socket.id;
-  console.log(`-- Host data is ${JSON.stringify(hostData)}`);
   socket.emit("hostJoin", hostData);
 });
 
@@ -31,7 +30,6 @@ function getHostId() {
 }
 
 socket.on("newPlayer", (playerData) => {
-  console.log("-- Received newPlayer on host");
   $(".players").append(`
     <div class="player-card" id="${playerData.socketId}">
         ${playerData.name}
@@ -40,7 +38,6 @@ socket.on("newPlayer", (playerData) => {
 });
 
 socket.on("playerLeaving", (playerData) => {
-  console.log(`-- Player ${playerData.playerId} just left`);
   $(`#${playerData.socketId}`).remove();
 });
 
@@ -54,11 +51,12 @@ socket.on("listPlayers", (players) => {
 });
 
 socket.on("gameInfo", (game) => {
-  $(".game-info .game-title").html(`Quiz: ${game.title}`);
-  $(".game-info .game-pin").html(`PIN: ${game.gamePin}`);
+  $(".game-info .game-title").html(`${game.title}`);
+  $(".game-info .game-pin").html(`${game.gamePin}`);
 });
 
 $("#go-live-btn").click(function () {
+  $(this).css("display", "none");
   let hostData = UrlParameters.getAllUrlParameters();
   hostData.hostId = getHostId();
   hostData.socketId = socket.id;
@@ -67,6 +65,7 @@ $("#go-live-btn").click(function () {
 
 socket.on("startGame", (game) => {
   $(".players-info").css("display", "none");
+  $(".game-info").css("display", "none");
   $(".quiz").css("display", "flex");
   $(".time-info").css("display", "flex");
 
@@ -74,12 +73,17 @@ socket.on("startGame", (game) => {
 
   let currentQuestion = game.currentQuestion;
   let currentAnswers = currentQuestion.answers;
-  $(".quiz-header .quiz-title").html(game.title);
   $(".quiz-header .question-title").html(currentQuestion.title);
+  let icons = ["circle", "ethereum", "heart", "square"];
   currentAnswers.forEach(function (answer, i) {
-    $(".quiz-body .alternatives").append(`
-        <div class="alternative" data-answer-number="${i}"> ${answer.title} </div>
-    `);
+    let row = i < 2 ? "first-row" : "second-row";
+    $(`.quiz-body .alternatives .${row}`).append(`
+      <div class="alternative-card" data-answer-number="${i}">
+        <div class="alternative-icon">
+          <i class="fas fa-${icons[i]}"></i>
+        </div>
+        <div class="alternative alternative-text"> ${answer.title} </div>
+      </div>`);
   });
 });
 
@@ -123,15 +127,21 @@ socket.on("nextQuestion", (game) => {
     $(".leaderboard").css("display", "flex");
     return;
   }
+  $(".leaderboard").empty();
   $(".quiz").css("display", "flex");
   let currentQuestion = game.currentQuestion;
   let currentAnswers = currentQuestion.answers;
   $(".quiz-header .question-title").html(currentQuestion.title);
   $(".quiz-body .alternatives").empty();
   currentAnswers.forEach(function (answer, i) {
-    $(".quiz-body .alternatives").append(`
-        <div class="alternative" data-answer-number="${i}"> ${answer.title} </div>
-    `);
+    let row = i < 2 ? "first-row" : "second-row";
+    $(`.quiz-body .alternatives .${row}`).append(`
+      <div class="alternative-card" data-answer-number="${i}">
+        <div class="alternative-icon">
+          <i class="fas fa-${icons[i]}"></i>
+        </div>
+        <div class="alternative alternative-text"> ${answer.title} </div>
+      </div>`);
   });
   resetProgressBar();
 });
