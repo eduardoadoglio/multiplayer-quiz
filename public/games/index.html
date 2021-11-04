@@ -6,17 +6,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Games</title>
     <link rel="stylesheet" href="../css/games.css" />
+    <script
+      src="https://kit.fontawesome.com/6fe5a34bb7.js"
+      crossorigin="anonymous"
+    ></script>
   </head>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <body>
-    <a href="../">Voltar</a>
-    <h1>Escolha um desses jogos ou crie um novo:</h1>
-    <div id="current-games"></div>
-    <a href="../games/new-game/index.html"
-      ><button>Criar um jogo novo</button></a
-    >
-    <div class="games">
-      <div class="no-games"><p>Ainda não há nenhum jogo criado.</p></div>
+    <div class="host-welcome">
+      <a id="go-back" href="../"><i class="fas fa-arrow-left"></i></a>
+      <div class="host-welcome-header">
+        <div class="host-games-title">Seus jogos criados!</div>
+        <div class="host-games-sub-title">
+          Escolha um desses jogos ou crie um novo
+        </div>
+        <a class="new-game-btn" href="../games/new-game/"
+          ><button>
+            <i class="fas fa-plus"></i> &nbsp Criar um jogo novo
+          </button></a
+        >
+      </div>
+      <div class="games">
+        <div class="no-games">
+          <p>Os jogos que você criar serão listados aqui!</p>
+        </div>
+      </div>
     </div>
   </body>
   <script src="/socket.io/socket.io.js"></script>

@@ -17,3 +17,5 @@ $("#close-modal").click(function () {
   $(this).parent().css("display", "none");
   $(this).parent().css("top", "-10%");
 });
+
+particlesJS.load("particles-js", "../assets/particles/particles.json");
