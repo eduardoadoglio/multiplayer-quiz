@@ -1,34 +1,71 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fredoka+One&family=Roboto:wght@400;900&display=swap");
 
 * {
   font-family: "Roboto", sans-serif;
 }
 
 @keyframes progress {
-  from {
+  0% {
     width: 100%;
+    background: linear-gradient(to bottom, green, rgb(31, 153, 0));
   }
-  to {
+  25% {
+    background: linear-gradient(to bottom, rgb(31, 153, 0), rgb(87, 153, 0));
+  }
+  50% {
+    background: linear-gradient(to bottom, rgb(87, 153, 0), rgb(138, 153, 0));
+  }
+  75% {
+    background: linear-gradient(to bottom, rgb(138, 153, 0), rgb(153, 105, 0));
+  }
+  100% {
     width: 0%;
+    background: linear-gradient(to bottom, red, #900);
   }
 }
 html,
 body {
   margin: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.game-content {
+  display: flex;
+  flex-flow: column nowrap;
+  background-color: #964eb5;
+  height: 100%;
+  overflow-y: auto;
 }
 
 .game-info {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  align-items: center;
+  margin-top: 30px;
+  color: white;
+  padding-bottom: 30px;
+  box-shadow: -2px 13px 6px -12px rgba(255, 255, 255, 0.59);
+}
+
+.game-info * {
+  font-family: "Fredoka One";
+}
+
+.game-info .game-pin {
+  font-size: 300%;
 }
 
 .game-info #go-live-btn {
-  background-color: #457ab2;
-  border: none;
-  padding: 10px 18px;
+  background-color: #ad3edd;
   color: white;
-  border-radius: 100px;
+  font-size: 15px;
+  width: 250px;
+  height: 40px;
+  border-radius: 12px 5px;
+  border: none;
+  outline: none;
   cursor: pointer;
 }
 
@@ -39,19 +76,21 @@ body {
   justify-content: space-evenly;
   align-items: center;
   padding: 5px;
+  margin-top: 30px;
 }
 
 .players .player-card {
   display: flex;
-  justify-content: center;
+  flex-direction: column nowrap;
+  justify-content: space-around;
   align-items: center;
-  background-color: #457ab2;
-  color: white;
-  width: auto;
+  overflow-y: auto;
   padding: 18px 10px;
-  border-radius: 13px;
-  margin: 5px;
   min-width: 200px;
+  border-radius: 5px 12px;
+  margin: 5px;
+  background-color: #ad3edd;
+  color: white;
 }
 
 .quiz {
@@ -69,7 +108,7 @@ body {
 }
 .time-remaining {
   width: 100%;
-  height: 10px;
+  height: 5px;
   background-color: #cccccc;
   overflow: hidden;
 }
@@ -82,8 +121,10 @@ body {
 }
 
 .seconds-left {
-  font-size: 40px;
+  font-size: 70px;
   text-align: center;
+  color: white;
+  font-family: "Fredoka One";
 }
 
 .quiz-header {
@@ -95,42 +136,61 @@ body {
   flex-shrink: 1;
 }
 
-.quiz-body {
-  flex-grow: 2;
+.quiz-header .question-title {
+  font-size: 45px;
+  font-family: "Fredoka One";
+  color: white;
 }
 
-.quiz-body .alternatives {
+.alternatives {
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}
-
-.alternatives .alternative {
-  display: flex;
-  flex: 1 0 30%;
-  margin: 5px;
-  height: 100px;
+  flex-flow: row wrap;
+  width: 100%;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
-  pointer-events: none;
 }
 
-.alternatives .alternative:nth-child(1) {
-  background-color: #457ab2;
+.alternative-card {
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 100px;
+  min-width: 200px;
+  margin: 10px;
 }
 
-.alternatives .alternative:nth-child(2) {
-  background-color: #dc3545;
+.alternative-card .alternative-text {
+  font-family: "Fredoka One";
+  color: white;
+  margin-bottom: 20px;
 }
 
-.alternatives .alternative:nth-child(3) {
+.alternative-card i {
+  color: white;
+  margin-top: 20px;
+}
+
+.alternatives .first-row .alternative-card:nth-child(1) {
   background-color: #45b260;
 }
 
-.alternatives .alternative:nth-child(4) {
-  background-color: #dcec48;
+.alternatives .first-row .alternative-card:nth-child(2) {
+  background-color: #457ab2;
+}
+
+.alternatives .second-row .alternative-card:nth-child(1) {
+  background-color: #dc3545;
+}
+
+.alternatives .second-row .alternative-card:nth-child(2) {
+  background-color: #ffe600;
+}
+
+.alternative-card .question-field input[type="text"] {
+  border: none;
+  outline: none;
+  color: black;
 }
 
 .leaderboard {

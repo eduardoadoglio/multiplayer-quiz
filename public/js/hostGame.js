@@ -54,8 +54,8 @@ socket.on("listPlayers", (players) => {
 });
 
 socket.on("gameInfo", (game) => {
-  $(".game-info .game-title").html(`Quiz: ${game.title}`);
-  $(".game-info .game-pin").html(`PIN: ${game.gamePin}`);
+  $(".game-info .game-title").html(`${game.title}`);
+  $(".game-info .game-pin").html(`${game.gamePin}`);
 });
 
 $("#go-live-btn").click(function () {
@@ -67,6 +67,7 @@ $("#go-live-btn").click(function () {
 
 socket.on("startGame", (game) => {
   $(".players-info").css("display", "none");
+  $(".game-info").css("display", "none");
   $(".quiz").css("display", "flex");
   $(".time-info").css("display", "flex");
 
@@ -74,12 +75,19 @@ socket.on("startGame", (game) => {
 
   let currentQuestion = game.currentQuestion;
   let currentAnswers = currentQuestion.answers;
-  $(".quiz-header .quiz-title").html(game.title);
+  console.log(`currentAnswers: ${JSON.stringify(currentAnswers)}`);
   $(".quiz-header .question-title").html(currentQuestion.title);
+  let icons = ["circle", "ethereum", "heart", "square"];
   currentAnswers.forEach(function (answer, i) {
-    $(".quiz-body .alternatives").append(`
-        <div class="alternative" data-answer-number="${i}"> ${answer.title} </div>
-    `);
+    console.log("Looping through answers");
+    let row = i < 2 ? "first-row" : "second-row";
+    $(`.quiz-body .alternatives .${row}`).append(`
+      <div class="alternative-card" data-answer-number="${i}">
+        <div class="alternative-icon">
+          <i class="fas fa-${icons[i]}"></i>
+        </div>
+        <div class="alternative alternative-text"> ${answer.title} </div>
+      </div>`);
   });
 });
 

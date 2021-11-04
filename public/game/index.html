@@ -9,26 +9,31 @@
   </head>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <body>
-    <div class="quiz">
-      <div class="quiz-header">
-        <div class="time-info">
-          <div class="time-remaining">
-            <div class="progress-bar"></div>
+    <div class="game-info">
+      <div class="quiz">
+        <div class="quiz-header">
+          <div class="time-info">
+            <div class="time-remaining">
+              <div class="progress-bar"></div>
+            </div>
+          </div>
+          <div class="seconds-left">30</div>
+          <div class="quiz-title"></div>
+          <div class="question-title"></div>
+        </div>
+        <div class="quiz-body">
+          <div class="alternatives">
+            <div class="first-row"></div>
+            <div class="second-row"></div>
           </div>
         </div>
-        <div class="seconds-left">30</div>
-        <div class="quiz-title"></div>
-        <div class="question-title"></div>
       </div>
-      <div class="quiz-body">
-        <div class="alternatives"></div>
+      <div class="leaderboard">
+        <div class="podium second-place" id="2"></div>
+        <div class="podium first-place" id="1"></div>
+        <div class="podium third-place" id="3"></div>
+        <div class="player-list remaining-players"></div>
       </div>
-    </div>
-    <div class="leaderboard">
-      <div class="podium second-place" id="2"></div>
-      <div class="podium first-place" id="1"></div>
-      <div class="podium third-place" id="3"></div>
-      <div class="player-list remaining-players"></div>
     </div>
   </body>
   <script src="/socket.io/socket.io.js"></script>
