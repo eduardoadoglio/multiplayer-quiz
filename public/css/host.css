@@ -33,7 +33,7 @@ body {
 .game-content {
   display: flex;
   flex-flow: column nowrap;
-  background-color: #964eb5;
+  background-color: #9f83dd;
   height: 100%;
   overflow-y: auto;
 }
@@ -195,5 +195,64 @@ body {
 
 .leaderboard {
   display: none;
+  padding: 30px;
   flex-flow: column wrap;
+  background-color: #9f83dd;
+  height: 100%;
+}
+
+.podium {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-evenly;
+  align-items: center;
+  margin: 60px 0px;
+}
+
+.podium-player-card {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.podium div:nth-child(1) .player-score {
+  font-size: 30px;
+}
+.podium div:nth-child(2) .player-score {
+  font-size: 50px;
+}
+.podium div:nth-child(3) .player-score {
+  font-size: 25px;
+}
+
+.player-list.remaining-players {
+  margin: 0 auto;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  width: 30vw;
+}
+
+.player-list .player-card {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  width: 100%;
+  padding: 20px 10px;
+}
+
+.podium-player-card .player-info,
+.player-card .player-info {
+  display: flex;
+}
+
+.player-score,
+.player-rank {
+  font-family: "Fredoka One";
+  color: white;
+}
+
+.player-name {
+  margin-left: 10px;
 }
