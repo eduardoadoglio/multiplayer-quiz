@@ -47,7 +47,7 @@ body {
 }
 
 body {
-  background-color: rgb(138, 25, 182);
+  background-color: #964eb5;
 }
 .welcome-info {
   height: 100%;
@@ -84,7 +84,7 @@ body {
 }
 
 .user-info .form-btn button {
-  background-color: rgb(168, 13, 230);
+  background-color: #ad3edd;
   color: white;
   width: 250px;
   height: 40px;

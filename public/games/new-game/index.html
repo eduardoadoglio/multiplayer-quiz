@@ -5,49 +5,90 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>New game</title>
+    <link rel="stylesheet" href="../../css/newGame.css" />
+    <script
+      src="https://kit.fontawesome.com/6fe5a34bb7.js"
+      crossorigin="anonymous"
+    ></script>
   </head>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <body>
-    <a href="../">Voltar</a>
-    <h1>Criação de um jogo</h1>
-    Adicione uma questão
-    <div class="title">
-      <span>Qual é o título do seu quiz?</span>
-      <input type="text" name="title" id="title" autofocus />
-    </div>
-    <div class="questions">
-      <div class="question">
-        <div class="question-field question-title">
-          <span>Questão 1</span>
-          <input type="text" id="question" />
-        </div>
-        <div class="question-field question-answer">
-          <span>Alternativa 1</span>
-          <input type="text" id="alternative" />
-          <input type="checkbox" name="right-answer" id="right-answer" />
-        </div>
-        <div class="question-field question-answer">
-          <span>Alternativa 2</span>
-          <input type="text" id="alternative" />
-          <input type="checkbox" name="right-answer" id="right-answer" />
-        </div>
-        <div class="question-field question-answer">
-          <span>Alternativa 3</span>
-          <input type="text" id="alternative" />
-          <input type="checkbox" name="right-answer" id="right-answer" />
-        </div>
-        <div class="question-field question-answer">
-          <span>Alternativa 4</span>
-          <input type="text" id="alternative" />
-          <input type="checkbox" name="right-answer" id="right-answer" />
+    <div class="new-game">
+      <a id="go-back" href="../"><i class="fas fa-arrow-left"></i></a>
+      <div class="header">
+        <div class="header-title">Criação de um jogo</div>
+      </div>
+      <div class="game-input regular">
+        <div class="game-title">Qual é o título do seu quiz?</div>
+        <div class="game-title-input">
+          <input type="text" name="title" id="title" autofocus />
         </div>
       </div>
-    </div>
-    <div class="new-question">
-      <button id="new-question-btn">Adicionar outra pergunta</button>
-    </div>
-    <div class="create-game">
-      <button id="create-game-btn">Finalizar criação do jogo</button>
+      <div class="questions">
+        <div class="question">
+          <div class="game-input regular">
+            <div class="game-title">Título da pergunta</div>
+            <div class="game-title-input">
+              <input type="text" name="title" id="question" />
+            </div>
+          </div>
+
+          <div class="alternatives">
+            <div class="first-row">
+              <div class="alternative-card">
+                <div class="alternative-icon">
+                  <i class="fas fa-circle"></i>
+                </div>
+                <div class="question-field question-alternative">
+                  <input type="text" id="alternative" />
+                  <input type="checkbox" id="right-alternative" />
+                </div>
+              </div>
+              <div class="alternative-card">
+                <div class="alternative-icon">
+                  <i class="fab fa-ethereum"></i>
+                </div>
+                <div class="question-field question-alternative">
+                  <input type="text" id="alternative" />
+                  <input type="checkbox" id="right-alternative" />
+                </div>
+              </div>
+            </div>
+            <div class="second-row">
+              <div class="alternative-card">
+                <div class="alternative-icon">
+                  <i class="fas fa-heart"></i>
+                </div>
+                <div class="question-field question-alternative">
+                  <input type="text" id="alternative" />
+                  <input type="checkbox" id="right-alternative" />
+                </div>
+              </div>
+              <div class="alternative-card">
+                <div class="alternative-icon">
+                  <i class="fas fa-square"></i>
+                </div>
+                <div class="question-field question-alternative">
+                  <input type="text" id="alternative" />
+                  <input type="checkbox" id="right-alternative" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="creation-btns">
+        <div class="new-question">
+          <button id="new-question-btn">
+            <i class="fas fa-plus"></i> &nbsp Adicionar outra pergunta
+          </button>
+        </div>
+        <div class="create-game">
+          <button id="create-game-btn">
+            <i class="fas fa-check"></i> &nbsp Finalizar criação do jogo
+          </button>
+        </div>
+      </div>
     </div>
   </body>
   <script src="../../socket.io/socket.io.js"></script>

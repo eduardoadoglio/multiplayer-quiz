@@ -22,7 +22,7 @@ body {
 .host-welcome {
   display: flex;
   flex-flow: column wrap;
-  background-color: rgb(138, 25, 182);
+  background-color: #964eb5;
   height: 100%;
 }
 
@@ -47,7 +47,7 @@ body {
 }
 
 .host-welcome-header .new-game-btn button {
-  background-color: rgb(168, 13, 230);
+  background-color: #ad3edd;
   color: white;
   font-size: 20px;
   font-family: "Fredoka One";
@@ -57,6 +57,7 @@ body {
   border: none;
   outline: none;
   margin-top: 50px;
+  cursor: pointer;
 }
 
 .games {
@@ -76,7 +77,7 @@ body {
   min-width: 200px;
   border-radius: 13px;
   margin: 5px;
-  background-color: rgb(168, 13, 230);
+  background-color: #ad3edd;
   color: white;
   cursor: pointer;
 }
