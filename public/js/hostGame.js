@@ -108,10 +108,8 @@ setInterval(function () {
   if (timeLeft <= 0) {
     timeLeft = 0;
   }
-  timeLeft = 99;
   if (isShowingQuestion && timeLeft == 0) {
     $(".quiz").css("display", "none");
-    console.log("-- emitting showLeaderBoard from timer");
     socket.emit("showLeaderBoard", currentGame);
   } else if (isShowingLeaderBoard && timeLeft === 0) {
     $(".leaderboard").css("display", "none");
