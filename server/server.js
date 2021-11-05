@@ -63,7 +63,6 @@ io.on("connection", (socket) => {
     let playerIsInGame = await PlayerUtils.isPlayerInGame(playerId, gamePin);
     if (gameIsLive && !playerIsInGame) {
       io.to(playerData.socketId).emit("gameAlreadyLive");
-      return;
     }
     await PlayerUtils.removeOtherPlayersWithPlayerId(newPlayer.playerId);
     newPlayer.save();
@@ -74,7 +73,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnect", async function () {
-    player = await PlayerUtils.getPlayerBySocketId(socket.id);
+    let player = await PlayerUtils.getPlayerBySocketId(socket.id);
     if (player) {
       await PlayerUtils.removePlayerFromGames(socket.id);
       console.log(`-- Sending playerLeaving to game ${player.gamePin}`);
