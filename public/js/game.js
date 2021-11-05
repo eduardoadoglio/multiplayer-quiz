@@ -140,7 +140,7 @@ function resetProgressBar() {
   $(".time-remaining div").removeClass("progress-bar");
   setTimeout(function () {
     $(".time-remaining div").addClass("progress-bar");
-  }, 100);
+  }, 300);
 }
 
 function setCurrentProgress() {

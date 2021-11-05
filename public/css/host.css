@@ -58,7 +58,7 @@ body {
 }
 
 .game-info #go-live-btn {
-  background-color: #ad3edd;
+  background-color: #9261ff;
   color: white;
   font-size: 15px;
   width: 250px;
@@ -89,7 +89,7 @@ body {
   min-width: 200px;
   border-radius: 5px 12px;
   margin: 5px;
-  background-color: #ad3edd;
+  background-color: #9261ff;
   color: white;
 }
 

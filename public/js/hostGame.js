@@ -108,6 +108,7 @@ setInterval(function () {
   if (timeLeft <= 0) {
     timeLeft = 0;
   }
+  timeLeft = 99;
   if (isShowingQuestion && timeLeft == 0) {
     $(".quiz").css("display", "none");
     console.log("-- emitting showLeaderBoard from timer");
@@ -211,5 +212,5 @@ function resetProgressBar() {
   $(".time-remaining div").removeClass("progress-bar");
   setTimeout(function () {
     $(".time-remaining div").addClass("progress-bar");
-  }, 100);
+  }, 300);
 }
