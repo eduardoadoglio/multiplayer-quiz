@@ -57,7 +57,7 @@ function getAnswersFromQuestion(question) {
     .find(".question-alternative")
     .each(function (_, obj) {
       let answerTitle = $(this).find("#alternative").val();
-      let correctAnswer = $(this).find("#right-answer").prop("checked");
+      let correctAnswer = $(this).find("#right-alternative").prop("checked");
       answers.push({
         title: answerTitle,
         correct: correctAnswer,
