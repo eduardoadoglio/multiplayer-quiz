@@ -52,14 +52,20 @@ io.on("connection", (socket) => {
 
   socket.on("newPlayer", async (playerData) => {
     let newPlayer = PlayerUtils.getPlayerModelFromMap(playerData);
-    await PlayerUtils.removeOtherPlayersWithPlayerId(newPlayer.playerId);
+    let playerId = newPlayer.playerId;
     let gamePin = newPlayer.gamePin;
     let gameExists = await GameUtils.gameExists(gamePin);
     if (!gameExists) {
-      console.log(`Game ${gamePin} doesn't exist!`);
-      socket.emit("noGameFound");
+      io.to(playerData.socketId).emit("noGameFound");
       return;
     }
+    let gameIsLive = await GameUtils.isLive(gamePin);
+    let playerIsInGame = await PlayerUtils.isPlayerInGame(playerId, gamePin);
+    if (gameIsLive && !playerIsInGame) {
+      io.to(playerData.socketId).emit("gameAlreadyLive");
+      return;
+    }
+    await PlayerUtils.removeOtherPlayersWithPlayerId(newPlayer.playerId);
     newPlayer.save();
     io.to(gamePin).emit("newPlayer", playerData);
     let players = await PlayerUtils.getAllPlayersFromGame(gamePin);

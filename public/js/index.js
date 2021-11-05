@@ -13,7 +13,7 @@ $(document).ready(function () {
   }
 });
 
-$("#close-modal").click(function () {
+$(".close-modal").click(function () {
   $(this)
     .parent()
     .animate(

@@ -24,8 +24,6 @@ socket.on("disconnect", function () {
   socket.emit("playerLeaving", playerData);
 });
 
-socket.on("startGame", (game) => {});
-
 setInterval(function () {
   if (!$(".time-info").is(":visible") || $(".game-over").is(":visible")) return;
   let currentTime = Date.now();
@@ -46,7 +44,6 @@ setInterval(function () {
 }, 100);
 
 socket.on("nextQuestion", (game) => {
-  localStorage.setItem("currentGame", JSON.stringify(game));
   if (game.currentQuestion == null) {
     $(".leaderboard").addClass("game-over");
     $(".timer-info").css("display", "none");
@@ -54,13 +51,15 @@ socket.on("nextQuestion", (game) => {
     $(".leaderboard").css("display", "flex");
     return;
   }
-  $(".leaderboard").empty();
   $(".leaderboard").css("display", "none");
   $(".quiz").css("display", "flex");
   let currentQuestion = game.currentQuestion;
   let currentAnswers = currentQuestion.answers;
   $(".quiz-header .question-title").html(currentQuestion.title);
-  $(".quiz-body .alternatives").empty();
+
+  $(".quiz-body .alternatives .first-row").empty();
+  $(".quiz-body .alternatives .second-row").empty();
+
   let icons = [
     "fas fa-circle",
     "fab fa-ethereum",

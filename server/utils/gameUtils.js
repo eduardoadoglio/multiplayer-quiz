@@ -122,6 +122,11 @@ class GameUtils {
     }
     return newGame;
   }
+
+  static async isLive(gamePin) {
+    let game = await gameModel.findOne({ gamePin: gamePin }).exec();
+    return game.isLive;
+  }
 }
 
 module.exports = GameUtils;

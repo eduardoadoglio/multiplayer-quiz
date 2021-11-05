@@ -214,6 +214,14 @@ body {
   height: 100%;
 }
 
+.leaderboard-title {
+  margin-top: 20px;
+  font-size: 40px;
+  font-family: "Fredoka One";
+  text-align: center;
+  color: white;
+}
+
 .podium {
   display: flex;
   flex-flow: row nowrap;

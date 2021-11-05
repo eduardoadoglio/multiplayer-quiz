@@ -44,6 +44,12 @@ class PlayerUtils {
       .exec();
     return players;
   }
+
+  static async isPlayerInGame(playerId, gamePin) {
+    let player = await playerModel.findOne({ playerId: playerId }).exec();
+    if (player) return player.gamePin == gamePin;
+    return false;
+  }
 }
 
 module.exports = PlayerUtils;
