@@ -7,7 +7,6 @@ socket.on("connect", function () {
     hostId: getHostId(),
     socketId: socket.id,
   };
-  console.log(`---- Listing games for ${hostData.hostId}`);
   socket.emit("listGames", hostData);
 });
 
@@ -21,7 +20,6 @@ function getHostId() {
 }
 
 socket.on("listGames", (games) => {
-  console.log(`-- GAMES: ${JSON.stringify(games)}`);
   if (games == undefined || games.length <= 0) {
     $(".no-games").css("display", "flex");
     return;

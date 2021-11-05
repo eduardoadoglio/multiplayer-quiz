@@ -74,13 +74,18 @@ socket.on("startGame", (game) => {
   let currentQuestion = game.currentQuestion;
   let currentAnswers = currentQuestion.answers;
   $(".quiz-header .question-title").html(currentQuestion.title);
-  let icons = ["circle", "ethereum", "heart", "square"];
+  let icons = [
+    "fas fa-circle",
+    "fab fa-ethereum",
+    "fas fa-heart",
+    "fas fa-square",
+  ];
   currentAnswers.forEach(function (answer, i) {
     let row = i < 2 ? "first-row" : "second-row";
     $(`.quiz-body .alternatives .${row}`).append(`
       <div class="alternative-card" data-answer-number="${i}">
         <div class="alternative-icon">
-          <i class="fas fa-${icons[i]}"></i>
+          <i class="${icons[i]}"></i>
         </div>
         <div class="alternative alternative-text"> ${answer.title} </div>
       </div>`);
@@ -147,6 +152,7 @@ socket.on("nextQuestion", (game) => {
 });
 
 socket.on("showLeaderBoard", (playerRanking) => {
+  console.log("-- received showLeaderBoard");
   $(".leaderboard").css("display", "flex");
   // For some reason splicing the array makes it out of order, so
   // this is a quick solution
@@ -156,10 +162,14 @@ socket.on("showLeaderBoard", (playerRanking) => {
   $(".leaderboard").css("display", "flex");
   podium.forEach(function (player, i) {
     let position = i + 1;
+    $(`.leaderboard #${position}`).empty();
     $(`.leaderboard #${position}`).append(`
-      <div class="podium-player-card" id="${player.playerId}"> 
-        <div class="player-name"> ${position}. ${player.name} </div>
-        <div class="player-score">Pontuação: ${player.score}</div>
+      <div class="podium-player-card" id="${player.playerId}">
+        <div class="player-info">
+          <div class="player-rank">${position}.</div>
+          <div class="player-name">  ${player.name} </div>
+        </div>
+        <div class="player-score">${player.score}</div>
       </div>
     `);
   });
@@ -167,8 +177,11 @@ socket.on("showLeaderBoard", (playerRanking) => {
   getRankingAfterPodium.forEach(function (player, i) {
     $(".remaining-players").append(`
         <div class="player-card" id="${player.playerId}"> 
-            <div class="player-name"> ${i + 4}. ${player.name} </div>
-            <div class="player-score">${player.score} </div>
+          <div class="player-info">
+            <div class="player-rank">${i + 4}. </div>
+            <div class="player-name">  ${player.name} </div>
+          </div>
+          <div class="player-score">${player.score} </div>
         </div>
     `);
   });
@@ -197,5 +210,5 @@ function resetProgressBar() {
   $(".time-remaining div").removeClass("progress-bar");
   setTimeout(function () {
     $(".time-remaining div").addClass("progress-bar");
-  }, 100);
+  }, 300);
 }
