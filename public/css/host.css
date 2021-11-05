@@ -23,6 +23,16 @@
     background: linear-gradient(to bottom, red, #900);
   }
 }
+
+@keyframes disable {
+  from {
+    filter: grayscale(0%);
+  }
+  to {
+    filter: grayscale(75%);
+  }
+}
+
 html,
 body {
   margin: 0;
@@ -158,6 +168,7 @@ body {
   min-height: 100px;
   min-width: 200px;
   margin: 10px;
+  cursor: pointer;
 }
 
 .alternative-card .alternative-text {
@@ -201,6 +212,14 @@ body {
   flex-flow: column wrap;
   background-color: #9f83dd;
   height: 100%;
+}
+
+.leaderboard-title {
+  margin-top: 20px;
+  font-size: 40px;
+  font-family: "Fredoka One";
+  text-align: center;
+  color: white;
 }
 
 .podium {
@@ -257,4 +276,13 @@ body {
 
 .player-name {
   margin-left: 10px;
+}
+
+.disabled-effect {
+  animation: disable 0.7s ease-in-out;
+  animation-fill-mode: forwards;
+}
+
+.disabled {
+  pointer-events: none;
 }

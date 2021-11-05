@@ -43,6 +43,11 @@ socket.on("noGameFound", function () {
   window.location.href = "../index.html";
 });
 
+socket.on("gameAlreadyLive", function () {
+  localStorage.setItem("openModal", "#game-already-live");
+  window.location.href = "../index.html";
+});
+
 socket.on("startGame", (game) => {
   localStorage.removeItem("currentGame");
   localStorage.setItem("currentGame", JSON.stringify(game));

@@ -155,3 +155,31 @@ body {
   cursor: pointer;
   margin-left: 15%;
 }
+
+#error-modal {
+  position: fixed;
+  top: -10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: auto;
+  display: none;
+  border-radius: 13px;
+  align-items: center;
+  justify-self: center;
+  background-color: #dc3545;
+  color: white;
+  justify-content: flex-end;
+  padding: 18px 10px;
+}
+
+.modal-content {
+  width: 300px;
+  margin-right: auto;
+}
+
+#close-modal {
+  font-size: 25px;
+  font-weight: 800;
+  cursor: pointer;
+  align-self: flex-end;
+}

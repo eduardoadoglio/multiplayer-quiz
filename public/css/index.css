@@ -10,7 +10,7 @@ body {
   height: 100%;
 }
 
-#no-games-found {
+.error-modal {
   position: fixed;
   top: -10%;
   left: 50%;
@@ -26,12 +26,12 @@ body {
   padding: 18px 10px;
 }
 
-.no-games-content {
+.error-modal-content {
   width: 300px;
   margin-right: auto;
 }
 
-#close-modal {
+.close-modal {
   font-size: 25px;
   font-weight: 800;
   cursor: pointer;

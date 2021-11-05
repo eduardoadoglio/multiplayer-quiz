@@ -13,9 +13,18 @@ $(document).ready(function () {
   }
 });
 
-$("#close-modal").click(function () {
-  $(this).parent().css("display", "none");
-  $(this).parent().css("top", "-10%");
+$(".close-modal").click(function () {
+  $(this)
+    .parent()
+    .animate(
+      {
+        top: "-10%",
+      },
+      750,
+      function () {
+        $(this).css("display", "none");
+      }
+    );
 });
 
 particlesJS.load("particles-js", "../assets/particles/particles.json");

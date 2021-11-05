@@ -92,3 +92,9 @@ body {
 .no-games {
   display: none;
 }
+
+.no-games p {
+  font-family: "Fredoka One";
+  color: white;
+  font-size: 20px;
+}
