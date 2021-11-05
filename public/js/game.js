@@ -186,6 +186,7 @@ $(document).ready(function () {
 });
 
 $(".alternatives").on("click", ".alternative-card", function () {
+  if ($(this).hasClass("disabled")) return;
   let currentGame = getCurrentGame();
   let currentAnswers = currentGame.currentQuestion.answers;
   let correct = currentAnswers[$(this).data("answer-number")].correct;
@@ -195,11 +196,8 @@ $(".alternatives").on("click", ".alternative-card", function () {
     correct: correct,
     scoreIncrease: getScoreIncrease(),
   };
-  $(".alternatives .alternative-card")
-    .not(this)
-    .css("filter", "grayscale(60%)");
-
-  $(".alternatives .alternative-card").css("pointer-events, disabled");
+  $(".alternatives .alternative-card").not(this).addClass("disabled-effect");
+  $(".alternatives .alternative-card").addClass("disabled");
   socket.emit("quizAnswer", answerData);
 });
 
